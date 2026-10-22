@@ -1,0 +1,78 @@
+/* Loader Component Styles */
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 24px;
+}
+
+.loader-stage {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-core-orb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6, #22D3EE);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.8), 0 0 50px rgba(34, 211, 238, 0.5);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.loader-orbit-1 {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 1.5px dashed rgba(167, 139, 250, 0.4);
+  border-radius: 50%;
+  animation: spinClockwise 4s linear infinite;
+}
+
+.loader-particle-1 {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22D3EE;
+  box-shadow: 0 0 10px #22D3EE;
+}
+
+.loader-orbit-2 {
+  position: absolute;
+  width: 80px;
+  height: 35px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+  animation: spinCounter 3.2s linear infinite;
+}
+
+.loader-particle-2 {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #F472B6;
+  box-shadow: 0 0 10px #F472B6;
+}
+
+.loader-text {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  fontWeight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  text-align: center;
+}

@@ -1,0 +1,129 @@
+/* ==========================================================================
+   AssignmentsPage.css - Academic Coursework & Submission Portal
+   ========================================================================== */
+
+.assignments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.assignments-controls-bar {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.assignments-tabs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.assignments-tab-btn {
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.assignments-tab-btn.active {
+  font-weight: 700;
+  background-color: rgba(244, 114, 182, 0.25);
+  border: 1px solid var(--pink-accent);
+  color: #FFFFFF;
+}
+
+.assignments-tab-btn:not(.active) {
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+}
+
+.assignments-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  width: 280px;
+}
+
+.assignments-search-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  width: 100%;
+}
+
+.assignments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.assignment-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+}
+
+.assignment-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.assignment-course-name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--electric-violet);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.assignment-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.assignment-card-desc {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.assignment-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin-bottom: 16px;
+}
+
+.assignment-card-actions {
+  display: flex;
+  gap: 10px;
+}

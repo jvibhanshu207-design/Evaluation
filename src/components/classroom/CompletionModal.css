@@ -1,0 +1,126 @@
+/* CompletionModal Component Styles */
+
+.completion-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0 20px 0;
+}
+
+.completion-trophy-orb {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F59E0B, #FBBF24, #F472B6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+  margin-bottom: 20px;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.completion-tag {
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #FBBF24;
+  margin-bottom: 6px;
+}
+
+.completion-title {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.completion-subtext {
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  margin-bottom: 22px;
+}
+
+.completion-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.completion-stat-card {
+  padding: 12px 8px;
+  border-radius: var(--radius-md);
+}
+
+.completion-stat-card.emerald {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+
+.completion-stat-card.cyan {
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+}
+
+.completion-stat-card.purple {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.completion-stat-card.amber {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.completion-stat-val {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.completion-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.completion-cert-banner {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(34, 211, 238, 0.15));
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 26px;
+}
+
+.completion-cert-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.completion-cert-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FBBF24;
+}
+
+.completion-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}

@@ -1,0 +1,114 @@
+/* ==========================================================================
+   MyLearningPage.css - Workspace for Enrolled Curriculum
+   ========================================================================== */
+
+.my-learning-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.my-learning-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.my-learning-tab-btn {
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.my-learning-tab-btn.active {
+  font-weight: 700;
+  background-color: rgba(139, 92, 246, 0.25);
+  border: 1px solid var(--electric-violet);
+  color: #FFFFFF;
+}
+
+.my-learning-tab-btn:not(.active) {
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+}
+
+.my-learning-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: space-between;
+}
+
+.my-learning-thumb-wrap {
+  position: relative;
+  height: 150px;
+}
+
+.my-learning-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-learning-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(8, 11, 24, 0.9) 100%);
+}
+
+.my-learning-category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background-color: rgba(8, 11, 24, 0.85);
+  color: var(--cyan-accent);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.my-learning-card-body {
+  padding: 20px 20px 10px 20px;
+}
+
+.my-learning-course-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.my-learning-instructor {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.my-learning-progress-row {
+  display: flex;
+  justify-content: space-between;
+  fontSize: 0.82rem;
+  margin-bottom: 6px;
+}
+
+.my-learning-meta-row {
+  margin-top: 10px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.my-learning-actions {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 10px;
+}

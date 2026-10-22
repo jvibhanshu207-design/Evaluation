@@ -1,0 +1,101 @@
+/* AssignmentModal Component Styles */
+
+.asg-modal-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.asg-modal-success-orb {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background-color: rgba(52, 211, 153, 0.15);
+  border: 2px solid var(--emerald-accent);
+  color: var(--emerald-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 0 30px rgba(52, 211, 153, 0.4);
+}
+
+.asg-modal-success-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.asg-modal-success-desc {
+  color: var(--text-secondary);
+  max-width: 420px;
+  font-size: 0.94rem;
+}
+
+.asg-section-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--electric-violet);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.asg-instructions-box {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+}
+
+.asg-graded-banner {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background-color: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asg-editor-textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.asg-file-drop {
+  border: 2px dashed var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.asg-file-drop:hover {
+  border-color: var(--electric-violet);
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.asg-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 20px;
+}

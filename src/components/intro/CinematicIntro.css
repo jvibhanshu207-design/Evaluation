@@ -1,0 +1,257 @@
+/* Cinematic Intro Styling */
+.intro-container {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #080B18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.intro-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #151B38 0%, #080B18 80%);
+  overflow: hidden;
+}
+
+.portal-grid {
+  position: absolute;
+  inset: -100px;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: perspective(600px) rotateX(60deg) translateY(180px);
+  transform-origin: center bottom;
+  opacity: 0.6;
+}
+
+.floating-chalk-symbols {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chalk-sym {
+  position: absolute;
+  color: rgba(167, 139, 240, 0.22);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+/* Character walking stage */
+.learner-stage {
+  position: absolute;
+  bottom: 120px;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  pointer-events: none;
+}
+
+.student-character {
+  position: absolute;
+  bottom: 0;
+  width: 90px;
+  height: 160px;
+  transition: transform 0.1s linear;
+}
+
+/* Walking bounce animation */
+.student-bob {
+  animation: walkBob 0.6s infinite ease-in-out alternate;
+}
+
+@keyframes walkBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+.student-legs-walk {
+  animation: legSwing 0.6s infinite ease-in-out alternate;
+  transform-origin: 50% 20%;
+}
+
+@keyframes legSwing {
+  0% { transform: rotate(-22deg); }
+  100% { transform: rotate(22deg); }
+}
+
+/* Flying pebble towards camera */
+.flying-stone {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle, #67E8F9, #3B82F6, #1E1B4B);
+  border-radius: 50%;
+  box-shadow: 0 0 25px #22D3EE, 0 0 50px #8B5CF6;
+  z-index: 1000;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+@keyframes flyToCamera {
+  0% {
+    transform: scale(0.8) translate(0, 0);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(8) translate(-10px, -20px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(50) translate(-30px, -50px);
+    opacity: 0.95;
+    filter: blur(4px);
+  }
+}
+
+/* Impact shockwave */
+.impact-shockwave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  margin-top: -90px;
+  margin-left: -90px;
+  border: 4px solid #22D3EE;
+  border-radius: 50%;
+  box-shadow: 0 0 40px #22D3EE, inset 0 0 40px #8B5CF6;
+  animation: rippleShockwave 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+/* Glass crack SVG overlay */
+.glass-crack-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1200;
+}
+
+.crack-path {
+  fill: none;
+  stroke: #E0F2FE;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px #22D3EE) drop-shadow(0 0 20px #8B5CF6);
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: crackDraw 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes crackDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Glowing particles */
+.intro-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFly 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/* LearnSphere revealed logo */
+.intro-logo-reveal {
+  position: relative;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: logoConverge 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  text-align: center;
+}
+
+.intro-logo-orb {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.intro-logo-title {
+  font-family: var(--font-heading);
+  font-size: 3.6rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 40%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+  margin-bottom: 8px;
+}
+
+.intro-tagline {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: #E2E8F0;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* Top control buttons */
+.intro-controls {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.skip-intro-btn {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #F8FAFC;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.skip-intro-btn:hover {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: #A78BFA;
+  transform: translateX(3px);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.audio-toggle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #F8FAFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.audio-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

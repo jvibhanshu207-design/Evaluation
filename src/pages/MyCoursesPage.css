@@ -1,0 +1,137 @@
+/* ==========================================================================
+   MyCoursesPage.css - Portfolio of Purchased Courses from Orders
+   ========================================================================== */
+
+.my-courses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.my-courses-stats-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-radius: var(--radius-lg);
+  background-color: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.my-courses-stat-divider {
+  width: 1px;
+  height: 32px;
+  background-color: var(--border-subtle);
+}
+
+.my-courses-empty-card {
+  padding: 70px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.my-courses-empty-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan-accent);
+  margin-bottom: 20px;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.2);
+}
+
+.my-courses-purchased-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.my-courses-thumb-wrap {
+  position: relative;
+  height: 170px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.my-courses-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-courses-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 11, 24, 0.1) 0%, rgba(16, 21, 42, 0.95) 100%);
+}
+
+.my-courses-license-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background-color: rgba(52, 211, 153, 0.25);
+  color: var(--emerald-accent);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.my-courses-card-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.my-courses-card-category {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--electric-violet);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.my-courses-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.my-courses-instructor-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.my-courses-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 18px;
+}

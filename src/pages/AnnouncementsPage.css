@@ -1,0 +1,125 @@
+/* ==========================================================================
+   AnnouncementsPage.css - University Bulletins & Academic Circulars
+   ========================================================================== */
+
+.announcements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.announcements-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.announcements-filter-group {
+  display: flex;
+  gap: 8px;
+}
+
+.announcements-filter-btn {
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.announcements-filter-btn.active {
+  font-weight: 700;
+  background-color: rgba(139, 92, 246, 0.25);
+  border: 1px solid var(--electric-violet);
+  color: #FFFFFF;
+}
+
+.announcements-filter-btn:not(.active) {
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+}
+
+.announcements-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  width: 280px;
+}
+
+.announcements-search-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  width: 100%;
+}
+
+.announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.announcement-card {
+  padding: 24px;
+}
+
+.announcement-card.urgent {
+  border-left: 4px solid #EF4444;
+}
+
+.announcement-card.unread {
+  background-color: rgba(139, 92, 246, 0.08);
+}
+
+.announcement-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.announcement-tag-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.announcement-category-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--electric-violet);
+  text-transform: uppercase;
+}
+
+.announcement-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.announcement-card-body {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.94rem;
+  margin-bottom: 16px;
+}
+
+.announcement-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

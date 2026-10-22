@@ -1,0 +1,71 @@
+/* EnrollmentModal Component Styles */
+
+.enroll-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0 16px 0;
+}
+
+.enroll-celebration-orb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(34, 211, 238, 0.25));
+  border: 2px solid var(--cyan-accent);
+  box-shadow: 0 0 35px rgba(34, 211, 238, 0.4), inset 0 0 20px rgba(139, 92, 246, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  color: var(--cyan-accent);
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.enroll-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--electric-violet);
+  margin-bottom: 8px;
+}
+
+.enroll-heading {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.enroll-course-box {
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  margin-bottom: 18px;
+  max-width: 100%;
+}
+
+.enroll-course-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.enroll-desc {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.enroll-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 13px 24px;
+  font-size: 1.02rem;
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+}

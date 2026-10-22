@@ -1,0 +1,76 @@
+/* ==========================================================================
+   QuizzesPage.css - Interactive Assessment Engine
+   ========================================================================== */
+
+.quizzes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.quizzes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.quiz-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 230px;
+}
+
+.quiz-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.quiz-course-tag {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--electric-violet);
+  text-transform: uppercase;
+}
+
+.quiz-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.quiz-card-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.quiz-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quiz-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin-bottom: 16px;
+  font-size: 0.84rem;
+}
+
+.quiz-score-value {
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

@@ -1,0 +1,217 @@
+/* LandingPage Styles */
+
+.landing-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-hero {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px 80px 20px;
+  position: relative;
+}
+
+.landing-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  background-color: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  color: var(--cyan-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+
+.landing-hero-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5.5vw, 4.4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  max-width: 920px;
+  margin-bottom: 22px;
+}
+
+.landing-hero-subtext {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 740px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.landing-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 54px;
+}
+
+.landing-cta-btn-primary {
+  padding: 14px 32px;
+  font-size: 1.05rem;
+}
+
+.landing-cta-btn-secondary {
+  padding: 14px 28px;
+  font-size: 1.05rem;
+}
+
+.landing-orb-stage {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-planetary-orb {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #8B5CF6 0%, #3B82F6 50%, #080B18 90%);
+  box-shadow: 0 0 80px rgba(139, 92, 246, 0.6), 0 0 120px rgba(34, 211, 238, 0.3);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-orb-core {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #22D3EE;
+  box-shadow: 0 0 35px #22D3EE;
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.landing-float-card {
+  position: absolute;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.landing-float-card.pos-1 {
+  top: 20px;
+  left: 4%;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+}
+
+.landing-float-card.pos-2 {
+  top: 30px;
+  right: 5%;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+}
+
+.landing-float-card.pos-3 {
+  bottom: 25px;
+  left: 8%;
+  border: 1px solid rgba(244, 114, 182, 0.35);
+}
+
+.landing-float-card.pos-4 {
+  bottom: 25px;
+  right: 8%;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.landing-float-card.pos-streak {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 80px);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  gap: 8px;
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.25);
+}
+
+.landing-features-section {
+  padding: 60px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.landing-features-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.landing-features-tag {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--electric-violet);
+}
+
+.landing-features-title {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 6px;
+}
+
+.landing-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.landing-feature-card {
+  padding: 28px;
+}
+
+.landing-feature-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.landing-courses-section {
+  padding: 40px 0 80px 0;
+}
+
+.landing-courses-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.landing-stats-banner {
+  padding: 40px;
+  margin-bottom: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.landing-stat-number {
+  font-size: 2.4rem;
+  font-weight: 900;
+}

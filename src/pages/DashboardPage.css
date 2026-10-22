@@ -1,0 +1,471 @@
+/* ==========================================================================
+   DashboardPage.css - Dedicated styles for the LearnSphere Main Dashboard
+   ========================================================================== */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Header Banner */
+.dashboard-banner {
+  padding: 28px 32px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dashboard-banner-glow {
+  position: absolute;
+  top: -50px;
+  right: 10%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.dashboard-banner-content {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-banner-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.86rem;
+  color: var(--cyan-accent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dashboard-banner-title {
+  font-family: var(--font-heading);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.dashboard-banner-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.96rem;
+}
+
+/* Motivational Quote Pill */
+.dashboard-quote-pill {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.dashboard-quote-pill:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.dashboard-quote-text {
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  font-style: italic;
+}
+
+.dashboard-quote-author {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* 7-Day Streak Card */
+.dashboard-streak-card {
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.1));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 220px;
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-streak-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-streak-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-streak-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #FBBF24;
+}
+
+.dashboard-streak-status {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.dashboard-streak-days {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.dashboard-streak-day-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #F59E0B;
+  color: #080B18;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+/* 6 Widgets Grid */
+.dashboard-widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+/* Feature Launchpad */
+.dashboard-launchpad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.dashboard-launchpad-card {
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.dashboard-launchpad-card.card-ai {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.16) 0%, rgba(34, 211, 238, 0.08) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+}
+
+.dashboard-launchpad-card.card-ai:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.25);
+}
+
+.dashboard-launchpad-card.card-focus {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.dashboard-launchpad-card.card-focus:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.2);
+}
+
+.dashboard-launchpad-card.card-smart {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(244, 114, 182, 0.08) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.dashboard-launchpad-card.card-smart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.2);
+}
+
+.dashboard-launchpad-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dashboard-launchpad-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.dashboard-launchpad-icon.icon-ai {
+  background: linear-gradient(135deg, #8B5CF6, #22D3EE);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.dashboard-launchpad-icon.icon-focus {
+  background: linear-gradient(135deg, #06B6D4, #10B981);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+}
+
+.dashboard-launchpad-icon.icon-smart {
+  background: linear-gradient(135deg, #F59E0B, #F43F5E);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+
+.dashboard-launchpad-badge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.badge-ai {
+  background-color: rgba(52, 211, 153, 0.15);
+  color: var(--emerald-accent);
+}
+
+.badge-focus {
+  background-color: rgba(34, 211, 238, 0.15);
+  color: var(--cyan-accent);
+}
+
+.badge-smart {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: #FBBF24;
+}
+
+.dashboard-launchpad-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.dashboard-launchpad-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.dashboard-launchpad-cta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 14px;
+}
+
+.cta-ai {
+  color: var(--cyan-accent);
+}
+
+.cta-focus {
+  color: var(--emerald-accent);
+}
+
+.cta-smart {
+  color: #FBBF24;
+}
+
+/* Continue Learning Section */
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dashboard-section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-section-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--cyan-accent);
+  box-shadow: 0 0 10px var(--cyan-accent);
+}
+
+.dashboard-section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+
+.dashboard-section-link {
+  font-size: 0.86rem;
+  color: var(--cyan-accent);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dashboard-continue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.dashboard-continue-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dashboard-continue-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dashboard-continue-category {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--electric-violet);
+}
+
+.dashboard-continue-percent {
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.dashboard-continue-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.dashboard-continue-instructor {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.dashboard-continue-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.dashboard-continue-action {
+  margin-top: 16px;
+}
+
+.dashboard-continue-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 8px 14px;
+  font-size: 0.86rem;
+}
+
+/* Two Column Bottom Grid */
+.dashboard-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.dashboard-panel-card {
+  padding: 24px;
+}
+
+.dashboard-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.dashboard-panel-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-panel-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.dashboard-panel-link {
+  font-size: 0.82rem;
+  color: var(--cyan-accent);
+}
+
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-list-item {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-item-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.dashboard-item-meta {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.dashboard-planner-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dashboard-priority-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}

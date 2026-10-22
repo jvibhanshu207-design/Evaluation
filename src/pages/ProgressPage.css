@@ -1,0 +1,140 @@
+/* ==========================================================================
+   ProgressPage.css - Performance Analytics & Cognitive Capability Model
+   ========================================================================== */
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.progress-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.progress-stat-card {
+  padding: 22px;
+}
+
+.progress-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.progress-stat-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.progress-stat-subtext {
+  font-size: 0.78rem;
+  margin-top: 6px;
+}
+
+.progress-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+/* Weekly Activity Bar Chart */
+.progress-barchart-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 200px;
+  padding: 10px 10px 0 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 12px;
+}
+
+.progress-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.progress-bar-val {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+  width: 100%;
+  max-width: 38px;
+  background: linear-gradient(180deg, #22D3EE 0%, #8B5CF6 100%);
+  border-radius: 6px 6px 0 0;
+  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
+
+.progress-bar-day {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 30-Day Heatmap */
+.progress-heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.progress-heatmap-cell {
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.progress-heatmap-cell:hover {
+  transform: scale(1.15);
+}
+
+/* Radar Hexagonal Grid */
+.radar-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .radar-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.radar-skill-row {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+}
+
+.radar-skill-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.radar-skill-bar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 1s ease;
+}
