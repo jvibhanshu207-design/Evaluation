@@ -17,6 +17,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { useCourses } from '../context/CourseContext';
+import { DEMO_COURSES } from '../data/demoCourses';
 import YouTubePlayer from '../components/classroom/YouTubePlayer';
 import CompletionModal from '../components/classroom/CompletionModal';
 import CertificateModal from '../components/certificate/CertificateModal';
@@ -29,6 +30,7 @@ export default function ClassroomPage() {
   const navigate = useNavigate();
   const {
     courses,
+    findCourse,
     isEnrolled,
     enrollCourse,
     markLessonComplete,
@@ -41,30 +43,44 @@ export default function ClassroomPage() {
     isWatchLater
   } = useCourses();
 
-  const course = courses.find((c) => c.id === courseId);
+  // Find course from context or fall back to DEMO_COURSES
+  const course = (findCourse ? findCourse(courseId) : null) ||
+    courses.find((c) => c.id === courseId || (c.slug && c.slug === courseId)) ||
+    DEMO_COURSES.find((c) => c.id === courseId || (c.slug && c.slug === courseId)) ||
+    null;
 
   // Auto-enroll when entering classroom
   useEffect(() => {
     if (course && !isEnrolled(course.id)) {
       enrollCourse(course.id);
     }
-  }, [course?.id]);
+  }, [course?.id, isEnrolled, enrollCourse]);
+
+  // Ensure modules are always available with fallback to demo curriculum
+  const courseModules = (Array.isArray(course?.modules) && course.modules.length > 0)
+    ? course.modules
+    : (DEMO_COURSES.find((c) => c.id === course?.id)?.modules || []);
 
   // Flatten all lessons to locate current lesson
   const allLessons = [];
-  if (course?.modules && Array.isArray(course.modules)) {
-    course.modules.forEach((mod) => {
-      if (Array.isArray(mod.lessons)) {
-        mod.lessons.forEach((l) => {
-          allLessons.push({ ...l, moduleId: mod.id, moduleTitle: mod.title });
-        });
-      }
-    });
-  }
+  courseModules.forEach((mod) => {
+    if (Array.isArray(mod.lessons)) {
+      mod.lessons.forEach((l) => {
+        allLessons.push({ ...l, moduleId: mod.id, moduleTitle: mod.title });
+      });
+    }
+  });
 
-  // Current Lesson State
-  const initialLesson = (lessonId && allLessons.find((l) => l.id === lessonId)) || allLessons[0] || null;
-  const [activeLesson, setActiveLesson] = useState(initialLesson);
+  // Track user-selected lesson within this session
+  const [selectedLessonId, setSelectedLessonId] = useState(null);
+
+  // Synchronously resolve active lesson: URL param > user click > first incomplete > first lesson
+  const targetLessonId = lessonId || selectedLessonId;
+  const activeLesson = (targetLessonId && allLessons.find((l) => l.id === targetLessonId)) ||
+    allLessons.find((l) => !l.completed) ||
+    allLessons[0] ||
+    null;
+
   const [searchLessonQuery, setSearchLessonQuery] = useState('');
   const [playlistMode, setPlaylistMode] = useState(true);
   const [autoNextPrompt, setAutoNextPrompt] = useState(null);
@@ -89,30 +105,7 @@ export default function ClassroomPage() {
     'web-mod-2': true
   });
 
-  // Keep activeLesson synchronized with course or route changes
-  useEffect(() => {
-    if (!course || allLessons.length === 0) return;
-
-    if (lessonId) {
-      const match = allLessons.find((l) => l.id === lessonId);
-      if (match) {
-        setActiveLesson(match);
-        return;
-      }
-    }
-
-    if (activeLesson) {
-      const currentInCourse = allLessons.find((l) => l.id === activeLesson.id);
-      if (currentInCourse) {
-        setActiveLesson(currentInCourse);
-        return;
-      }
-    }
-
-    const firstIncomplete = allLessons.find((l) => !l.completed) || allLessons[0];
-    setActiveLesson(firstIncomplete);
-  }, [courseId, lessonId, course]);
-
+  // If course does not exist, display helpful 404
   if (!course) {
     return (
       <div className="classroom-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
@@ -134,16 +127,54 @@ export default function ClassroomPage() {
     );
   }
 
+  // If course legitimately has no lessons, display empty state
+  if (allLessons.length === 0 || !activeLesson) {
+    return (
+      <div className="classroom-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
+        <div className="glass-panel" style={{ maxWidth: '520px', margin: '40px auto', padding: '40px' }}>
+          <div
+            style={{
+              width: '52px',
+              height: '52px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(139, 92, 246, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
+              color: 'var(--primary-purple)'
+            }}
+          >
+            <ListVideo size={26} />
+          </div>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '10px' }}>No Lessons Available</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: '1.6' }}>
+            There are currently no lessons published for <strong>{course.title}</strong>. Please explore our other active courses.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <Link to="/courses" className="gradient-border-btn" style={{ padding: '9px 18px' }}>
+              <span>Browse Courses</span>
+              <ArrowRight size={15} />
+            </Link>
+            <Link to={`/courses/${course.id}`} className="glass-btn" style={{ padding: '9px 16px' }}>
+              <span>Course Details</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const stats = getCourseStats(course.id);
-  const nextLesson = (course && activeLesson) ? getNextLesson(course.id, activeLesson.id) : null;
-  const prevLesson = (course && activeLesson) ? getPrevLesson(course.id, activeLesson.id) : null;
+  const nextLesson = getNextLesson(course.id, activeLesson.id);
+  const prevLesson = getPrevLesson(course.id, activeLesson.id);
 
   const toggleModule = (modId) => {
     setExpandedModules((prev) => ({ ...prev, [modId]: !prev[modId] }));
   };
 
   const handleSelectLesson = (lesson) => {
-    setActiveLesson(lesson);
+    setSelectedLessonId(lesson.id);
     setAutoNextPrompt(null);
     sound.playClick();
   };
@@ -180,24 +211,13 @@ export default function ClassroomPage() {
   };
 
   // Filter lessons for sidebar search
-  const filteredModules = (course.modules || []).map((mod) => ({
+  const filteredModules = courseModules.map((mod) => ({
     ...mod,
     lessons: (mod.lessons || []).filter((l) =>
       l.title.toLowerCase().includes(searchLessonQuery.toLowerCase()) ||
       mod.title.toLowerCase().includes(searchLessonQuery.toLowerCase())
     )
   }));
-
-  if (!activeLesson) {
-    return (
-      <div className="classroom-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
-        <div className="glass-panel" style={{ maxWidth: '500px', margin: '40px auto', padding: '40px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>Loading Lessons...</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Preparing learning modules for {course.title}...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="classroom-container">
@@ -300,7 +320,7 @@ export default function ClassroomPage() {
 
                   {isExpanded && (
                     <div style={{ marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                      {mod.lessons.map((lesson) => {
+                      {(mod.lessons || []).map((lesson) => {
                         const isCurrent = lesson.id === activeLesson.id;
                         return (
                           <div

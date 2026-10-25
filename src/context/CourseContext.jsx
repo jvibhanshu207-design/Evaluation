@@ -18,16 +18,25 @@ const CourseContext = createContext();
 
 export function CourseProvider({ children }) {
 
-  // Courses with price preservation
+  // Courses with robust module preservation & fallback
   const [courses, setCourses] = useState(() => {
     const raw = getStoredData(STORAGE_KEYS.COURSES, DEMO_COURSES);
-    const demoMap = new Map(DEMO_COURSES.map(c => [c.id, c]));
-    return raw.map(c => {
-      const demo = demoMap.get(c.id) || {};
+    const rawList = Array.isArray(raw) && raw.length > 0 ? raw : DEMO_COURSES;
+    const rawMap = new Map(rawList.map(c => [c.id, c]));
+
+    // Guarantee all demo courses exist and retain their complete modules & lessons
+    return DEMO_COURSES.map(demo => {
+      const stored = rawMap.get(demo.id) || {};
+      const modules = (Array.isArray(stored.modules) && stored.modules.length > 0)
+        ? stored.modules
+        : demo.modules;
+
       return {
-        ...c,
-        price: c.price ?? demo.price ?? 49.99,
-        originalPrice: c.originalPrice ?? demo.originalPrice ?? 89.99
+        ...demo,
+        ...stored,
+        modules,
+        price: stored.price ?? demo.price ?? 49.99,
+        originalPrice: stored.originalPrice ?? demo.originalPrice ?? 89.99
       };
     });
   });
@@ -76,17 +85,32 @@ export function CourseProvider({ children }) {
     setStoredData(STORAGE_KEYS.WATCH_LATER, watchLater);
   }, [watchLater]);
 
+  // Helper to find course by id or slug
+  const findCourse = (courseId) => {
+    if (!courseId) return null;
+    const cleanId = String(courseId).trim().toLowerCase();
+    return courses.find(
+      c => c.id.toLowerCase() === cleanId || (c.slug && c.slug.toLowerCase() === cleanId)
+    ) || DEMO_COURSES.find(
+      c => c.id.toLowerCase() === cleanId || (c.slug && c.slug.toLowerCase() === cleanId)
+    ) || null;
+  };
+
   // Check whether user is enrolled
   const isEnrolled = (courseId) => {
-    return enrolledCourseIds.includes(courseId);
+    const course = findCourse(courseId);
+    const targetId = course ? course.id : courseId;
+    return enrolledCourseIds.includes(targetId);
   };
 
   // Enroll in a course
   const enrollCourse = (courseId) => {
-    if (!enrolledCourseIds.includes(courseId)) {
+    const course = findCourse(courseId);
+    const targetId = course ? course.id : courseId;
+    if (!enrolledCourseIds.includes(targetId)) {
       setEnrolledCourseIds(prev => [
         ...prev,
-        courseId
+        targetId
       ]);
       sound.playFanfare();
       return true;
@@ -133,10 +157,12 @@ export function CourseProvider({ children }) {
     completed = true
   ) => {
     let newlyFinishedCourse = false;
+    const targetCourse = findCourse(courseId);
+    const targetId = targetCourse ? targetCourse.id : courseId;
 
     setCourses(prevCourses => {
       return prevCourses.map(course => {
-        if (course.id !== courseId) {
+        if (course.id !== targetId) {
           return course;
         }
 
@@ -194,9 +220,7 @@ export function CourseProvider({ children }) {
 
   // Get course statistics
   const getCourseStats = (courseId) => {
-    const course = courses.find(
-      c => c.id === courseId
-    );
+    const course = findCourse(courseId);
 
     if (!course) {
       return {
@@ -248,9 +272,7 @@ export function CourseProvider({ children }) {
     courseId,
     currentLessonId
   ) => {
-    const course = courses.find(
-      c => c.id === courseId
-    );
+    const course = findCourse(courseId);
 
     if (!course) {
       return null;
@@ -285,9 +307,7 @@ export function CourseProvider({ children }) {
     courseId,
     currentLessonId
   ) => {
-    const course = courses.find(
-      c => c.id === courseId
-    );
+    const course = findCourse(courseId);
 
     if (!course) {
       return null;
@@ -332,6 +352,7 @@ export function CourseProvider({ children }) {
         enrolledCourseIds,
         enrolledCourses,
 
+        findCourse,
         isEnrolled,
         enrollCourse,
         markLessonComplete,
