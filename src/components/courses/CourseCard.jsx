@@ -1,37 +1,26 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Star, Users, Clock, ArrowRight, ShoppingBag, Check, Zap } from 'lucide-react';
+import { Star, Users, Clock, ArrowRight } from 'lucide-react';
 import { useCourses } from '../../context/CourseContext';
-import { useCart } from '../../context/CartContext';
 import ProgressBar from '../common/ProgressBar';
 import './CourseCard.css';
 
 export default function CourseCard({ course }) {
+  const { isEnrolled, getCourseStats, enrollCourse } = useCourses();
   const navigate = useNavigate();
-  const { isEnrolled, getCourseStats } = useCourses();
-  const { addToCart, isInCart, isPurchased } = useCart();
 
-  const enrolled = isEnrolled(course.id) || isPurchased(course.id);
-  const inCart = isInCart(course.id);
+  const enrolled = isEnrolled(course.id);
   const stats = getCourseStats(course.id);
 
   const price = Number(course.price || 49.99);
   const originalPrice = Number(course.originalPrice || 89.99);
   const discountPercent = Math.max(0, Math.round(((originalPrice - price) / originalPrice) * 100));
 
-  const handleAddToCart = (e) => {
+  const handleQuickEnroll = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(course);
-  };
-
-  const handleBuyNow = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!inCart) {
-      addToCart(course);
-    }
-    navigate('/checkout');
+    enrollCourse(course.id);
+    navigate(`/learn/${course.id}`);
   };
 
   return (
@@ -107,7 +96,7 @@ export default function CourseCard({ course }) {
 
         {/* Pricing & Actions */}
         <div>
-          {/* Price display for un-enrolled / purchased */}
+          {/* Price display (informational) */}
           <div className="course-card-pricing">
             <span className="course-card-price">
               ${price.toFixed(2)}
@@ -155,32 +144,32 @@ export default function CourseCard({ course }) {
               </div>
             </div>
           ) : (
-            <div className="course-card-actions-grid">
-              {/* Add to Cart button */}
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className={`glass-btn course-card-cart-btn ${inCart ? 'in-cart' : ''}`}
-                title={inCart ? 'Course is in your shopping cart' : 'Add course to cart'}
-              >
-                {inCart ? <Check size={14} /> : <ShoppingBag size={14} />}
-                <span>{inCart ? 'In Cart' : 'Add to Cart'}</span>
-              </button>
-
-              {/* Buy Now button */}
-              <button
-                type="button"
-                onClick={handleBuyNow}
-                className="gradient-border-btn"
+            <div className="course-card-actions-grid" style={{ display: 'flex', gap: '8px' }}>
+              <Link
+                to={`/courses/${course.id}`}
+                className="glass-btn"
                 style={{
-                  padding: '9px 10px',
+                  flex: 1,
+                  padding: '9px 12px',
                   fontSize: '0.84rem',
                   justifyContent: 'center'
                 }}
-                title="Instant Checkout with this course"
               >
-                <Zap size={14} />
-                <span>Buy Now</span>
+                <span>Details</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleQuickEnroll}
+                className="gradient-border-btn"
+                style={{
+                  flex: 1.2,
+                  padding: '9px 12px',
+                  fontSize: '0.84rem',
+                  justifyContent: 'center'
+                }}
+              >
+                <span>Enroll Now</span>
+                <ArrowRight size={14} />
               </button>
             </div>
           )}

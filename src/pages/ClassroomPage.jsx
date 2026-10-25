@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -26,8 +26,11 @@ import './ClassroomPage.css';
 
 export default function ClassroomPage() {
   const { courseId, lessonId } = useParams();
+  const navigate = useNavigate();
   const {
     courses,
+    isEnrolled,
+    enrollCourse,
     markLessonComplete,
     getCourseStats,
     getNextLesson,
@@ -38,23 +41,33 @@ export default function ClassroomPage() {
     isWatchLater
   } = useCourses();
 
-  const course = courses.find((c) => c.id === courseId) || courses[0];
-  const stats = getCourseStats(course.id);
+  const course = courses.find((c) => c.id === courseId);
+
+  // Auto-enroll when entering classroom
+  useEffect(() => {
+    if (course && !isEnrolled(course.id)) {
+      enrollCourse(course.id);
+    }
+  }, [course?.id]);
 
   // Flatten all lessons to locate current lesson
   const allLessons = [];
-  course.modules.forEach((mod) => {
-    mod.lessons.forEach((l) => {
-      allLessons.push({ ...l, moduleId: mod.id, moduleTitle: mod.title });
+  if (course?.modules && Array.isArray(course.modules)) {
+    course.modules.forEach((mod) => {
+      if (Array.isArray(mod.lessons)) {
+        mod.lessons.forEach((l) => {
+          allLessons.push({ ...l, moduleId: mod.id, moduleTitle: mod.title });
+        });
+      }
     });
-  });
+  }
 
   // Current Lesson State
-  const initialLesson = (lessonId && allLessons.find((l) => l.id === lessonId)) || allLessons[0];
+  const initialLesson = (lessonId && allLessons.find((l) => l.id === lessonId)) || allLessons[0] || null;
   const [activeLesson, setActiveLesson] = useState(initialLesson);
   const [searchLessonQuery, setSearchLessonQuery] = useState('');
   const [playlistMode, setPlaylistMode] = useState(true);
-  const [autoNextPrompt, setAutoNextPrompt] = useState(null); // when a lesson completes
+  const [autoNextPrompt, setAutoNextPrompt] = useState(null);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showCertificateModal, setShowCertificateModal] = useState(false);
   const [quickNote, setQuickNote] = useState('');
@@ -76,21 +89,54 @@ export default function ClassroomPage() {
     'web-mod-2': true
   });
 
-  // Update active lesson when URL parameter changes
+  // Keep activeLesson synchronized with course or route changes
   useEffect(() => {
+    if (!course || allLessons.length === 0) return;
+
     if (lessonId) {
       const match = allLessons.find((l) => l.id === lessonId);
-      if (match) setActiveLesson(match);
+      if (match) {
+        setActiveLesson(match);
+        return;
+      }
     }
-  }, [lessonId, courseId]);
 
-  // Keep activeLesson updated with fresh completion status from course context
-  useEffect(() => {
     if (activeLesson) {
-      const updated = allLessons.find((l) => l.id === activeLesson.id);
-      if (updated) setActiveLesson(updated);
+      const currentInCourse = allLessons.find((l) => l.id === activeLesson.id);
+      if (currentInCourse) {
+        setActiveLesson(currentInCourse);
+        return;
+      }
     }
-  }, [course]);
+
+    const firstIncomplete = allLessons.find((l) => !l.completed) || allLessons[0];
+    setActiveLesson(firstIncomplete);
+  }, [courseId, lessonId, course]);
+
+  if (!course) {
+    return (
+      <div className="classroom-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
+        <div className="glass-panel" style={{ maxWidth: '500px', margin: '40px auto', padding: '40px' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '12px' }}>Course Not Found</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+            The requested course could not be found or may have been removed.
+          </p>
+          <button
+            onClick={() => navigate('/courses')}
+            className="gradient-border-btn"
+            style={{ margin: '0 auto' }}
+          >
+            <span>Browse All Courses</span>
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = getCourseStats(course.id);
+  const nextLesson = (course && activeLesson) ? getNextLesson(course.id, activeLesson.id) : null;
+  const prevLesson = (course && activeLesson) ? getPrevLesson(course.id, activeLesson.id) : null;
 
   const toggleModule = (modId) => {
     setExpandedModules((prev) => ({ ...prev, [modId]: !prev[modId] }));
@@ -102,11 +148,9 @@ export default function ClassroomPage() {
     sound.playClick();
   };
 
-  const nextLesson = getNextLesson(course.id, activeLesson.id);
-  const prevLesson = getPrevLesson(course.id, activeLesson.id);
-
   // Mark lesson as complete
   const handleToggleComplete = () => {
+    if (!activeLesson) return;
     const isNowComplete = !activeLesson.completed;
     const { newlyFinishedCourse } = markLessonComplete(course.id, activeLesson.id, isNowComplete);
 
@@ -121,7 +165,7 @@ export default function ClassroomPage() {
 
   // Add quick note
   const handleSaveNote = () => {
-    if (!quickNote.trim()) return;
+    if (!quickNote.trim() || !activeLesson) return;
     setNotesList((prev) => [
       {
         id: Date.now(),
@@ -136,13 +180,24 @@ export default function ClassroomPage() {
   };
 
   // Filter lessons for sidebar search
-  const filteredModules = course.modules.map((mod) => ({
+  const filteredModules = (course.modules || []).map((mod) => ({
     ...mod,
-    lessons: mod.lessons.filter((l) =>
+    lessons: (mod.lessons || []).filter((l) =>
       l.title.toLowerCase().includes(searchLessonQuery.toLowerCase()) ||
       mod.title.toLowerCase().includes(searchLessonQuery.toLowerCase())
     )
   }));
+
+  if (!activeLesson) {
+    return (
+      <div className="classroom-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
+        <div className="glass-panel" style={{ maxWidth: '500px', margin: '40px auto', padding: '40px' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>Loading Lessons...</h2>
+          <p style={{ color: 'var(--text-secondary)' }}>Preparing learning modules for {course.title}...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="classroom-container">

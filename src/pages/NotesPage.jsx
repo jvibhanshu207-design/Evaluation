@@ -6,10 +6,7 @@ import {
   Pin,
   Trash2,
   Edit3,
-  Tag,
-  Folder,
   Save,
-  Check
 } from 'lucide-react';
 import { DEMO_NOTES } from '../data/demoNotes';
 import { STORAGE_KEYS, getStoredData, setStoredData } from '../utils/storage';

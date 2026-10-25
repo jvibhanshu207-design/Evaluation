@@ -1,75 +1,75 @@
 export const FAQS_DATA = [
   {
-    id: 'purchase-course',
-    category: 'Purchasing & Orders',
-    question: 'How do I purchase a course?',
+    id: 'how-to-enroll',
+    category: 'Enrollment & Access',
+    question: 'How do I enroll in a course?',
     answer:
-      'Browse our course catalog, click "Add to Cart" to collect multiple courses or click "Buy Now" on any course card for instant direct checkout. When ready, navigate to your Shopping Cart, review your itemized summary, and proceed through our seamless demo checkout.',
-    tag: 'Purchasing'
+      'Browse our course catalog, open any course detail page, and click "Enroll Now — Free Access". Enrollment is instant and free. Once enrolled, the course appears in your My Courses dashboard and My Learning workspace with full access to all video lectures, assignments, and quizzes.',
+    tag: 'Enrollment'
   },
   {
-    id: 'add-to-cart-work',
-    category: 'Cart & Checkout',
-    question: 'How does Add to Cart work?',
+    id: 'find-enrolled-courses',
+    category: 'Enrollment & Access',
+    question: 'Where can I find my enrolled courses?',
     answer:
-      'Clicking "Add to Cart" saves the selected course into your active cart and triggers a success toast notification. The cart counter in the top navigation updates dynamically. Duplicate additions for the same course are automatically prevented since courses are digital assets.',
-    tag: 'Cart'
-  },
-  {
-    id: 'complete-checkout',
-    category: 'Cart & Checkout',
-    question: 'How can I complete checkout?',
-    answer:
-      'From your Shopping Cart, cll̥ick "Proceed to Checkout". Provide your student name and email address in the validated checkout form, review your order breakdown, and click "Continue to Payment" to generate your order reference and proceed to the demo QR payment screen.',
-
-    tag: 'Checkout'
-  },
-  {
-    id: 'qr-code-demo',
-    category: 'Payment Demo',
-    question: 'How does the QR code demo work?',
-    answer:
-      'The payment page displays a demo QR code representing your generated order reference and total amount. To test the transaction flow without real currency, simply click the "Simulate Successful Payment" button. This triggers instant order fulfillment and navigates to your confirmation receipt.',
-    tag: 'QR Payment'
-  },
-  {
-    id: 'real-payment-gateway',
-    category: 'Payment Demo',
-    question: 'Is the payment system connected to a real payment gateway?',
-    answer:
-      'No. This is strictly a frontend demonstration running in DEMO MODE. No real bank accounts, UPI IDs, credit cards, or external payment gateways are charged. All order references, receipts, and course unlocks are handled entirely client-side.',
-    tag: 'Demo Mode'
-  },
-  {
-    id: 'find-purchased-courses',
-    category: 'My Courses & Access',
-    question: 'Where can I find my purchased courses?',
-    answer:
-      'Once a demo order is simulated as successful, all acquired courses are immediately listed in your "My Courses" dashboard (/my-courses) as well as your learning workspace. You can click "Start Learning" on any course card to access its full video curriculum and interactive lessons.',
+      'All your enrolled courses are listed in "My Courses" (/my-courses) and "My Learning" (/my-learning). You can click "Start Learning" on any course card to jump into the full video curriculum and interactive lessons.',
     tag: 'Access'
   },
   {
-    id: 'cancel-order',
-    category: 'Purchasing & Orders',
-    question: 'What happens if I cancel an order?',
+    id: 'certificate-earn',
+    category: 'Certificates',
+    question: 'How do I earn a course certificate?',
     answer:
-      'If you click "Cancel Order" on the payment page, the pending transaction is safely aborted and discarded. Your original items remain preserved in your shopping cart so you can resume, modify, or complete checkout whenever you are ready.',
-    tag: 'Orders'
+      'Complete all video lessons in a course to unlock your verifiable Certificate of Completion. Once the final lesson is marked complete, the course triggers a completion celebration and your certificate becomes available from the classroom or achievements section.',
+    tag: 'Certificate'
   },
   {
-    id: 'cart-persistence',
-    category: 'Cart & Checkout',
-    question: 'Will my cart items remain after refreshing the page?',
+    id: 'ai-tutor',
+    category: 'AI Tutor',
+    question: 'How does the AI Tutor work?',
     answer:
-      'Yes! All cart contents, pending checkout drafts, and completed demo order records are automatically synchronized and persisted in your browser’s localStorage. Your items will remain intact across page refreshes, tab closures, and browser restarts.',
-    tag: 'Persistence'
+      'The AI Tutor (powered by Google Gemini) is an intelligent assistant embedded throughout the platform. You can ask it to explain concepts, summarize lesson content, generate practice questions, or get hints on assignments. Access it from the floating AI button or inside any classroom session.',
+    tag: 'AI'
+  },
+  {
+    id: 'smart-learning-hub',
+    category: 'AI Tutor',
+    question: 'What is the Smart Learning Hub?',
+    answer:
+      'The Smart Learning Hub (/smart-learning) is a personalized study assistant that identifies your weak topics, generates adaptive practice quizzes, and builds a custom study path. It uses 3D flashcards, spaced repetition, and AI-driven insights to accelerate your understanding.',
+    tag: 'Smart Learning'
+  },
+  {
+    id: 'progress-tracking',
+    category: 'Progress & Achievements',
+    question: 'How is my learning progress tracked?',
+    answer:
+      'Every lesson you complete is recorded in real time. Your progress dashboard (/progress) shows completion percentages per course, weekly activity charts, total learning hours, assignment scores, and quiz performance. All data is stored locally in your browser.',
+    tag: 'Progress'
+  },
+  {
+    id: 'achievements-badges',
+    category: 'Progress & Achievements',
+    question: 'How do I unlock badges and achievements?',
+    answer:
+      'Achievements are earned by reaching milestones such as completing your first lesson, finishing an entire course, maintaining a study streak, passing quizzes with perfect scores, and more. Visit the Achievements page (/achievements) to see your earned badges, XP score, and leaderboard ranking.',
+    tag: 'Badges'
+  },
+  {
+    id: 'focus-room',
+    category: 'Study Tools',
+    question: 'What is the Focus Room?',
+    answer:
+      'The Focus Room (/focus-room) is a distraction-free Pomodoro study environment. Set a focus timer, pick a study goal, and work without interruptions. Ambient sounds, break reminders, and session tracking help you build deep work habits and study more effectively.',
+    tag: 'Focus'
   }
 ];
 
 export const FAQ_CATEGORIES = [
   'All',
-  'Purchasing & Orders',
-  'Cart & Checkout',
-  'Payment Demo',
-  'My Courses & Access'
+  'Enrollment & Access',
+  'Certificates',
+  'AI Tutor',
+  'Progress & Achievements',
+  'Study Tools'
 ];

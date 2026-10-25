@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, BookOpen, CheckSquare, HelpCircle, FileText, Bell, Award, Calendar, Compass, ArrowRight, ShoppingBag } from 'lucide-react';
+import { Search, BookOpen, CheckSquare, HelpCircle, FileText, Bell, Award, Calendar, Compass, ArrowRight } from 'lucide-react';
 import { useCourses } from '../../context/CourseContext';
 import { DEMO_ASSIGNMENTS } from '../../data/demoAssignments';
 import { DEMO_QUIZZES } from '../../data/demoQuizzes';
@@ -29,9 +29,7 @@ export default function CommandPalette({ isOpen, onClose }) {
     { id: 'p-smart', type: 'page', title: 'Smart Learning Hub', subtitle: 'Personalized path, 3D flashcards, weak topics & adaptive quiz', icon: BookOpen, link: '/smart-learning' },
     { id: 'p-focus', type: 'page', title: 'Focus Room (Pomodoro)', subtitle: 'Distraction-free study sanctuary & goals', icon: Calendar, link: '/focus-room' },
     { id: 'p-courses', type: 'page', title: 'Courses Marketplace', subtitle: 'Browse all subjects', icon: BookOpen, link: '/courses' },
-    { id: 'p-cart', type: 'page', title: 'Shopping Cart', subtitle: 'View selected courses & subtotal', icon: ShoppingBag, link: '/cart' },
-    { id: 'p-my-courses', type: 'page', title: 'My Courses (Purchased)', subtitle: 'Access purchased demo courses & lifetime licenses', icon: BookOpen, link: '/my-courses' },
-    { id: 'p-checkout', type: 'page', title: 'Checkout & Payment', subtitle: 'Complete course enrollment order', icon: CheckSquare, link: '/checkout' },
+    { id: 'p-my-courses', type: 'page', title: 'My Courses', subtitle: 'Access all enrolled courses & start learning', icon: BookOpen, link: '/my-courses' },
     { id: 'p-my-learn', type: 'page', title: 'My Learning', subtitle: 'Enrolled courses and progress', icon: BookOpen, link: '/my-learning' },
     { id: 'p-asg', type: 'page', title: 'Assignments', subtitle: 'Submit homework & view grades', icon: CheckSquare, link: '/assignments' },
     { id: 'p-quiz', type: 'page', title: 'Quizzes', subtitle: 'Interactive knowledge tests', icon: HelpCircle, link: '/quizzes' },

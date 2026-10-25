@@ -6,23 +6,17 @@ import {
   GraduationCap,
   Play,
   Clock,
-  ShieldCheck,
-  ShoppingBag,
   Award,
   Star
 } from 'lucide-react';
-import { useCart } from '../context/CartContext';
 import { useCourses } from '../context/CourseContext';
 import './MyCoursesPage.css';
 
 export default function MyCoursesPage() {
-  const { demoOrders, purchasedCourseIds } = useCart();
-  const { courses } = useCourses();
+  const { courses, isEnrolled } = useCourses();
 
-  // Filter courses that are associated with completed demo orders
-  const purchasedCourses = courses.filter((course) =>
-    purchasedCourseIds.includes(course.id)
-  );
+  // Filter courses where the user is enrolled
+  const enrolledCourses = courses.filter((course) => isEnrolled(course.id));
 
   return (
     <div className="my-courses-container">
@@ -35,31 +29,22 @@ export default function MyCoursesPage() {
           </div>
 
           <h1 className="page-title">
-            My Purchased <span className="gradient-text">Courses</span>
+            My <span className="gradient-text">Courses</span>
           </h1>
 
           <p className="page-subtitle">
-            Your personal learning dashboard displaying acquired courses from verified demo orders with lifetime classroom access.
+            Your personal learning dashboard displaying all enrolled courses with full classroom access.
           </p>
         </div>
 
-        {purchasedCourses.length > 0 && (
+        {enrolledCourses.length > 0 && (
           <div className="my-courses-stats-badge">
             <div>
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--cyan-accent)' }}>
-                {purchasedCourses.length}
+                {enrolledCourses.length}
               </div>
               <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                {purchasedCourses.length === 1 ? 'Purchased Course' : 'Purchased Courses'}
-              </div>
-            </div>
-            <div className="my-courses-stat-divider" />
-            <div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--emerald-accent)' }}>
-                {demoOrders.length}
-              </div>
-              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                {demoOrders.length === 1 ? 'Completed Order' : 'Completed Orders'}
+                {enrolledCourses.length === 1 ? 'Enrolled Course' : 'Enrolled Courses'}
               </div>
             </div>
           </div>
@@ -67,8 +52,8 @@ export default function MyCoursesPage() {
       </div>
 
       {/* Main Grid or Empty State */}
-      {purchasedCourses.length === 0 ? (
-        /* Empty State: No purchased courses yet */
+      {enrolledCourses.length === 0 ? (
+        /* Empty State: No enrolled courses yet */
         <div className="glass-panel my-courses-empty-card">
           <div className="my-courses-empty-icon">
             <BookOpen size={36} />
@@ -83,7 +68,7 @@ export default function MyCoursesPage() {
               marginBottom: '10px'
             }}
           >
-            No Purchased Courses Yet
+            No Enrolled Courses Yet
           </h2>
 
           <p
@@ -95,7 +80,7 @@ export default function MyCoursesPage() {
               marginBottom: '28px'
             }}
           >
-            You have not acquired any courses through demo checkout yet. Browse our comprehensive marketplace and test the purchasing flow to unlock courses here.
+            You have not enrolled in any courses yet. Browse our comprehensive catalog and enroll to start learning.
           </p>
 
           <Link
@@ -103,15 +88,15 @@ export default function MyCoursesPage() {
             className="gradient-border-btn"
             style={{ padding: '13px 28px', fontSize: '1rem', fontWeight: 700 }}
           >
-            <ShoppingBag size={18} />
-            <span>Browse Courses to Purchase</span>
+            <BookOpen size={18} />
+            <span>Browse Courses</span>
             <ArrowRight size={18} />
           </Link>
         </div>
       ) : (
-        /* Purchased Courses Grid */
+        /* Enrolled Courses Grid */
         <div className="courses-grid">
-          {purchasedCourses.map((course) => (
+          {enrolledCourses.map((course) => (
             <div
               key={course.id}
               className="glass-panel glass-panel-hover my-courses-purchased-card"
@@ -125,10 +110,10 @@ export default function MyCoursesPage() {
                 />
                 <div className="my-courses-thumb-overlay" />
 
-                {/* Purchased License Tag */}
+                {/* Enrolled Tag */}
                 <span className="my-courses-license-tag">
-                  <ShieldCheck size={12} />
-                  <span>Purchased • Lifetime License</span>
+                  <GraduationCap size={12} />
+                  <span>Enrolled</span>
                 </span>
               </div>
 

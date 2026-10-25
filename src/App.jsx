@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { CourseProvider } from './context/CourseContext';
 import { NotificationProvider } from './context/NotificationContext';
-import { CartProvider } from './context/CartContext';
 
 import MainLayout from './components/layout/MainLayout';
 import CinematicIntro from './components/intro/CinematicIntro';
@@ -30,12 +29,7 @@ import FocusRoomPage from './pages/FocusRoomPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
-import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
-import PaymentPage from './pages/PaymentPage';
-import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import MyCoursesPage from './pages/MyCoursesPage';
-
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(() => {
@@ -59,9 +53,8 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <CourseProvider>
-          <CartProvider>
-            <NotificationProvider>
-              {showIntro && <CinematicIntro onComplete={handleCompleteIntro} />}
+          <NotificationProvider>
+            {showIntro && <CinematicIntro onComplete={handleCompleteIntro} />}
 
             <BrowserRouter>
               <Routes>
@@ -89,19 +82,13 @@ export default function App() {
                   <Route path="/achievements" element={<AchievementsPage />} />
                   <Route path="/saved" element={<SavedLessonsPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route path="/payment" element={<PaymentPage />} />
-                  <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
-                  <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
                   <Route path="/my-courses" element={<MyCoursesPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>
             </BrowserRouter>
           </NotificationProvider>
-        </CartProvider>
-      </CourseProvider>
+        </CourseProvider>
       </AuthProvider>
     </ThemeProvider>
   );

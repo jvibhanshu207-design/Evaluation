@@ -170,19 +170,7 @@
 }
 
 .course-card-actions-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
-}
-
-.course-card-cart-btn {
-  padding: 9px 10px;
-  font-size: 0.84rem;
-  justify-content: center;
-}
-
-.course-card-cart-btn.in-cart {
-  border-color: var(--cyan-accent);
-  background-color: rgba(34, 211, 238, 0.12);
-  color: var(--cyan-accent);
 }

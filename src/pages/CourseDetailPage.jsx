@@ -9,44 +9,61 @@ import {
   PlayCircle,
   ArrowRight,
   ChevronDown,
-  ChevronUp,
-  ShoppingBag,
-  Zap,
-  Check
+  ChevronUp
 } from 'lucide-react';
 import { useCourses } from '../context/CourseContext';
-import { useCart } from '../context/CartContext';
 import EnrollmentModal from '../components/courses/EnrollmentModal';
 import ProgressBar from '../components/common/ProgressBar';
 import './CourseDetailPage.css';
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
-  const { courses, isEnrolled, enrollCourse, getCourseStats } = useCourses();
-  const { addToCart, isInCart, isPurchased } = useCart();
+  const { courses, isEnrolled, getCourseStats, enrollCourse } = useCourses();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'curriculum' | 'instructor' | 'reviews'
-  const [expandedModules, setExpandedModules] = useState({ 'mod-1': true, 'react-mod-1': true, 'dsa-mod-1': true, 'py-mod-1': true, 'db-mod-1': true, 'web-mod-1': true });
+  const [expandedModules, setExpandedModules] = useState({
+    'mod-1': true,
+    'react-mod-1': true,
+    'dsa-mod-1': true,
+    'py-mod-1': true,
+    'db-mod-1': true,
+    'web-mod-1': true
+  });
   const [showEnrollModal, setShowEnrollModal] = useState(false);
 
-  const course = courses.find((c) => c.id === courseId) || courses[0];
-  const enrolled = isEnrolled(course.id) || isPurchased(course.id);
-  const inCart = isInCart(course.id);
+  const course = courses.find((c) => c.id === courseId);
+
+  if (!course) {
+    return (
+      <div className="course-detail-container" style={{ textAlign: 'center', padding: '60px 20px' }}>
+        <div className="glass-panel" style={{ maxWidth: '500px', margin: '0 auto', padding: '40px' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '12px' }}>Course Not Found</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+            The course you are looking for does not exist or may have been removed.
+          </p>
+          <button
+            onClick={() => navigate('/courses')}
+            className="gradient-border-btn"
+            style={{ margin: '0 auto' }}
+          >
+            <span>Browse All Courses</span>
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const enrolled = isEnrolled(course.id);
   const stats = getCourseStats(course.id);
   const price = Number(course.price || 49.99);
   const originalPrice = Number(course.originalPrice || 89.99);
   const discountPercent = Math.max(0, Math.round(((originalPrice - price) / originalPrice) * 100));
 
-  const handleAddToCart = () => {
-    addToCart(course);
-  };
-
-  const handleBuyNow = () => {
-    if (!inCart) {
-      addToCart(course);
-    }
-    navigate('/checkout');
+  const handleEnrollNow = () => {
+    enrollCourse(course.id);
+    setShowEnrollModal(true);
   };
 
   const toggleModule = (modId) => {
@@ -112,23 +129,23 @@ export default function CourseDetailPage() {
               <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.96rem' }}>
                 {course.instructor.name}
               </div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                 {course.instructor.role}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Enrollment Card / Preview */}
-        <div className="glass-panel course-pricing-card">
-          <div className="course-preview-thumb-wrap">
+        {/* Right Column: Pricing & Enrollment Card */}
+        <div className="glass-panel course-enroll-card">
+          <div className="course-video-preview">
             <img
               src={course.thumbnail}
               alt={course.title}
-              className="course-preview-thumb"
+              className="course-video-thumb"
             />
-            <div className="course-preview-overlay">
-              <div className="course-preview-play-btn">
+            <div className="course-video-overlay">
+              <div className="course-play-pulse">
                 <PlayCircle size={32} />
               </div>
             </div>
@@ -181,47 +198,29 @@ export default function CourseDetailPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <button
                   type="button"
-                  onClick={handleBuyNow}
+                  onClick={handleEnrollNow}
                   className="gradient-border-btn"
                   style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '1.02rem' }}
                 >
-                  <Zap size={18} />
-                  <span>Buy Now — Instant Checkout</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleAddToCart}
-                  className="glass-btn"
-                  style={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    padding: '12px',
-                    fontSize: '0.96rem',
-                    borderColor: inCart ? 'var(--cyan-accent)' : 'var(--card-border)',
-                    backgroundColor: inCart ? 'rgba(34, 211, 238, 0.12)' : 'rgba(255, 255, 255, 0.05)',
-                    color: inCart ? 'var(--cyan-accent)' : 'var(--text-primary)'
-                  }}
-                >
-                  {inCart ? <Check size={18} /> : <ShoppingBag size={18} />}
-                  <span>{inCart ? 'Already in Cart' : 'Add to Shopping Cart'}</span>
+                  <span>Enroll Now — Free Access</span>
+                  <ArrowRight size={18} />
                 </button>
               </div>
             )}
-          </div>
 
-          <div className="course-perks-list">
-            <div className="course-perk-item">
-              <CheckCircle2 size={15} color="var(--emerald-accent)" />
-              <span>Full lifetime access to 10+ YouTube lectures</span>
-            </div>
-            <div className="course-perk-item">
-              <CheckCircle2 size={15} color="var(--emerald-accent)" />
-              <span>Interactive programming assignments & quizzes</span>
-            </div>
-            <div className="course-perk-item">
-              <CheckCircle2 size={15} color="var(--emerald-accent)" />
-              <span>Verifiable Certificate of Completion</span>
+            <div className="course-features-list">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={16} color="var(--emerald-accent)" />
+                <span>Full lifetime access to all lessons</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={16} color="var(--emerald-accent)" />
+                <span>Access on mobile, tablet &amp; desktop</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={16} color="var(--emerald-accent)" />
+                <span>Certificate of completion included</span>
+              </div>
             </div>
           </div>
         </div>
@@ -266,7 +265,7 @@ export default function CourseDetailPage() {
           </div>
 
           <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '14px' }}>
-            Prerequisites & Requirements
+            Prerequisites &amp; Requirements
           </h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', lineHeight: '1.6' }}>
             Basic computational literacy and enthusiasm to write code. No prior paid software required—all development tools used in this course are free and open-source.
@@ -277,7 +276,7 @@ export default function CourseDetailPage() {
       {/* Tab 2: Curriculum */}
       {activeTab === 'curriculum' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {course.modules.map((mod) => {
+          {course.modules?.map((mod) => {
             const isExpanded = !!expandedModules[mod.id];
             return (
               <div key={mod.id} className="glass-panel course-module-accordion">
@@ -291,7 +290,7 @@ export default function CourseDetailPage() {
                       {mod.title}
                     </span>
                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      ({mod.lessons.length} lessons)
+                      ({mod.lessons?.length || 0} lessons)
                     </span>
                   </div>
                   {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -299,7 +298,7 @@ export default function CourseDetailPage() {
 
                 {isExpanded && (
                   <div className="course-lessons-list">
-                    {mod.lessons.map((lesson) => (
+                    {mod.lessons?.map((lesson) => (
                       <div
                         key={lesson.id}
                         className="course-lesson-row"

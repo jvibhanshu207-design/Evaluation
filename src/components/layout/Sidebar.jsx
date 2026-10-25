@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useCourses } from '../../context/CourseContext';
 import {
   LayoutDashboard,
   Compass,
@@ -23,23 +24,27 @@ import {
   Brain,
   Timer,
   BookOpen,
-  ShoppingBag,
   X
 } from 'lucide-react';
 import { resetDemoData } from '../../utils/storage';
 import './Sidebar.css';
 
-export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onCloseMobile, onReplayIntro }) {
+export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onCloseMobile }) {
   const { logout } = useAuth();
+  const { enrolledCourseIds } = useCourses();
   const navigate = useNavigate();
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   const navLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/courses', label: 'Courses', icon: Compass },
-    { to: '/cart', label: 'Shopping Cart', icon: ShoppingBag },
-    { to: '/my-courses', label: 'My Courses', icon: BookOpen, badge: 'Owned' },
-    { to: '/my-learning', label: 'My Learning', icon: GraduationCap, badge: '6' },
+    { to: '/my-courses', label: 'My Courses', icon: BookOpen, badge: 'Enrolled' },
+    {
+      to: '/my-learning',
+      label: 'My Learning',
+      icon: GraduationCap,
+      badge: enrolledCourseIds?.length ? String(enrolledCourseIds.length) : undefined
+    },
     { to: '/assignments', label: 'Assignments', icon: FileCheck2, badge: '4' },
     { to: '/quizzes', label: 'Quizzes', icon: HelpCircle, badge: '2' },
     { to: '/notes', label: 'Notes', icon: FileText },

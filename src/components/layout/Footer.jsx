@@ -47,11 +47,6 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/cart" className="footer-link">
-                Shopping Cart
-              </Link>
-            </li>
-            <li>
               <Link to="/dashboard" className="footer-link">
                 Student Dashboard
               </Link>

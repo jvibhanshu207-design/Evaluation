@@ -4,13 +4,12 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useNotifications } from '../../context/NotificationContext';
 import NotificationDropdown from '../notifications/NotificationDropdown';
-import CartIcon from '../cart/CartIcon';
 import { Search, Flame, Bell, Moon, Sun, Menu, PlayCircle, User, LogOut, Timer, Brain } from 'lucide-react';
 import './Navbar.css';
 
 export default function Navbar({ onOpenCommandPalette, onToggleMobileSidebar, onReplayIntro }) {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
   const { unreadCount } = useNotifications();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -23,69 +22,47 @@ export default function Navbar({ onOpenCommandPalette, onToggleMobileSidebar, on
         <button
           onClick={onToggleMobileSidebar}
           className="mobile-hamburger-btn"
-          aria-label="Toggle Navigation"
+          aria-label="Toggle navigation drawer"
         >
-          <Menu size={18} />
+          <Menu size={20} />
         </button>
 
-        <Link to="/" className="navbar-brand-link">
-          {/* Logo Orb SVG */}
-          <div style={{ width: '34px', height: '34px' }}>
-            <svg viewBox="0 0 100 100" width="34" height="34">
-              <defs>
-                <linearGradient id="navOrbG" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#8B5CF6" />
-                  <stop offset="100%" stopColor="#22D3EE" />
-                </linearGradient>
-              </defs>
-              <circle cx="50" cy="50" r="45" fill="none" stroke="url(#navOrbG)" strokeWidth="6" />
-              <circle cx="50" cy="50" r="22" fill="url(#navOrbG)" />
-              <ellipse
-                cx="50"
-                cy="50"
-                rx="42"
-                ry="14"
-                fill="none"
-                stroke="#22D3EE"
-                strokeWidth="4"
-                transform="rotate(-28 50 50)"
-              />
-              <circle cx="82" cy="36" r="5" fill="#F472B6" />
-            </svg>
+        <Link to="/dashboard" className="navbar-brand">
+          <div className="navbar-logo-badge">
+            <span style={{ fontSize: '1.15rem' }}>🎓</span>
           </div>
-
-          <div>
-            <span className="navbar-brand-title">
-              LearnSphere
-            </span>
-          </div>
+          <span className="navbar-brand-name">
+            Learn<span className="gradient-text">Sphere</span>
+          </span>
+          <span className="navbar-version-pill">
+            v2.6
+          </span>
         </Link>
       </div>
 
-      {/* Center: Global Search Bar (Ctrl + K) */}
-      <div
-        onClick={onOpenCommandPalette}
-        className="nav-search-bar"
-      >
-        <Search size={16} color="var(--text-muted)" />
-        <span className="nav-search-text">
-          Search universe...
-        </span>
-        <span className="nav-search-kbd">
-          Ctrl K
-        </span>
+      {/* Center: Command Palette Trigger Button */}
+      <div className="navbar-center">
+        <button
+          onClick={onOpenCommandPalette}
+          className="navbar-search-btn"
+          aria-label="Search curriculum and tools (Ctrl + K)"
+        >
+          <Search size={16} className="navbar-search-icon" />
+          <span className="navbar-search-placeholder">Search courses, quizzes, assignments...</span>
+          <kbd className="navbar-search-kbd">⌘K</kbd>
+        </button>
       </div>
 
-      {/* Right Action Icons & Profile */}
+      {/* Right: Quick actions, notifications, streak & profile */}
       <div className="navbar-right">
         {/* Focus Room Quick Link */}
         <Link
           to="/focus-room"
           className="glass-btn navbar-quick-btn"
-          title="Distraction-Free Focus Room & Pomodoro"
+          title="Pomodoro Focus Room"
         >
           <Timer size={15} color="var(--cyan-accent)" />
-          <span className="hide-on-mobile">Focus Room</span>
+          <span className="hide-on-mobile">Focus</span>
         </Link>
 
         {/* Smart Learning Quick Link */}
@@ -106,9 +83,6 @@ export default function Navbar({ onOpenCommandPalette, onToggleMobileSidebar, on
           <Flame size={16} fill="#FBBF24" color="#FBBF24" />
           <span>7 Days</span>
         </div>
-
-        {/* Cart Icon */}
-        <CartIcon />
 
         {/* Theme Toggle Button */}
         <button

@@ -11,7 +11,6 @@ import {
   TrendingUp,
   ShieldCheck,
   Star,
-  Users,
   Bot,
   Timer,
   Brain
@@ -23,7 +22,7 @@ import FaqSection from '../components/faq/FaqSection';
 import Footer from '../components/layout/Footer';
 import './LandingPage.css';
 
-export default function LandingPage({ onReplayIntro }) {
+export default function LandingPage() {
   const { loginAsDemo } = useAuth();
   const { courses } = useCourses();
   const navigate = useNavigate();

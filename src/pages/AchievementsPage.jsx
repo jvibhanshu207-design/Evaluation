@@ -14,17 +14,15 @@ import {
   Sparkles,
   Users,
   Crown,
-  Medal,
-  ChevronRight
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { DEMO_ACHIEVEMENTS } from '../data/demoAchievements';
-import { STORAGE_KEYS, getStoredData, setStoredData } from '../utils/storage';
+import { STORAGE_KEYS, getStoredData } from '../utils/storage';
 import ProgressBar from '../components/common/ProgressBar';
 import { sound } from '../utils/sound';
 
 export default function AchievementsPage() {
-  const [achievements, setAchievements] = useState(() =>
+  const [achievements] = useState(() =>
     getStoredData(STORAGE_KEYS.ACHIEVEMENTS, DEMO_ACHIEVEMENTS)
   );
   const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'unlocked' | 'locked'

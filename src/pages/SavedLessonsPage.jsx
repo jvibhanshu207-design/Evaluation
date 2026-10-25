@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Bookmark, Clock, Play, ArrowRight, BookOpen, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Bookmark, Clock, Play, Trash2 } from 'lucide-react';
 import { useCourses } from '../context/CourseContext';
 import EmptyState from '../components/common/EmptyState';
 
 export default function SavedLessonsPage() {
   const { courses, bookmarks, toggleBookmark, watchLater, toggleWatchLater } = useCourses();
   const [activeTab, setActiveTab] = useState('bookmarks'); // 'bookmarks' | 'watchLater'
-  const navigate = useNavigate();
 
   // Find all lessons with their course metadata
   const allLessonsMap = [];
   courses.forEach((c) => {
-    c.modules.forEach((m) => {
-      m.lessons.forEach((l) => {
-        allLessonsMap.push({
-          ...l,
-          courseId: c.id,
-          courseName: c.title,
-          moduleTitle: m.title
-        });
+    if (Array.isArray(c.modules)) {
+      c.modules.forEach((m) => {
+        if (Array.isArray(m.lessons)) {
+          m.lessons.forEach((l) => {
+            allLessonsMap.push({
+              ...l,
+              courseId: c.id,
+              courseName: c.title,
+              moduleTitle: m.title
+            });
+          });
+        }
       });
-    });
+    }
   });
 
   const bookmarkedLessons = allLessonsMap.filter((l) => bookmarks.includes(l.id));
@@ -133,7 +136,7 @@ export default function SavedLessonsPage() {
                       if (activeTab === 'bookmarks') toggleBookmark(lesson.id);
                       else toggleWatchLater(lesson.id);
                     }}
-                    style={{ color: 'var(--text-muted)', cursor: 'pointer', padding: '2px' }}
+                    style={{ color: 'var(--text-muted)', cursor: 'pointer', padding: '2px', background: 'none', border: 'none' }}
                     title="Remove from list"
                   >
                     <Trash2 size={15} />
@@ -149,13 +152,13 @@ export default function SavedLessonsPage() {
                 </p>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid var(--card-border)' }}>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   Duration: {lesson.duration}
                 </span>
 
                 <Link
-                  to={`/learn/${lesson.courseId}`}
+                  to={`/learn/${lesson.courseId}/lesson/${lesson.id}`}
                   className="gradient-border-btn"
                   style={{ padding: '6px 14px', fontSize: '0.82rem' }}
                 >

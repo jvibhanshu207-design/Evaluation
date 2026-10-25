@@ -34,13 +34,9 @@ export function CourseProvider({ children }) {
 
   // Enrolled courses
   const [enrolledCourseIds, setEnrolledCourseIds] = useState(() =>
-    getStoredData('learnsphere_enrolled', [
+    getStoredData(STORAGE_KEYS.ENROLLED, [
       'java-programming',
-      'react-development',
-      'data-structures',
-      'python-fundamentals',
-      'database-management',
-      'web-development'
+      'react-development'
     ])
   );
 
@@ -67,7 +63,7 @@ export function CourseProvider({ children }) {
 
   // Sync enrolled courses
   useEffect(() => {
-    setStoredData('learnsphere_enrolled', enrolledCourseIds);
+    setStoredData(STORAGE_KEYS.ENROLLED, enrolledCourseIds);
   }, [enrolledCourseIds]);
 
   // Sync bookmarks
@@ -87,35 +83,25 @@ export function CourseProvider({ children }) {
 
   // Enroll in a course
   const enrollCourse = (courseId) => {
-
     if (!enrolledCourseIds.includes(courseId)) {
-
       setEnrolledCourseIds(prev => [
         ...prev,
         courseId
       ]);
-
       sound.playFanfare();
-
       return true;
     }
-
     return false;
   };
 
   // Toggle bookmark on a lesson
   const toggleBookmark = (lessonId) => {
-
     setBookmarks(prev => {
-
       const exists = prev.includes(lessonId);
-
       sound.playClick();
-
       return exists
         ? prev.filter(id => id !== lessonId)
         : [...prev, lessonId];
-
     });
   };
 
@@ -126,17 +112,12 @@ export function CourseProvider({ children }) {
 
   // Toggle Watch Later
   const toggleWatchLater = (lessonId) => {
-
     setWatchLater(prev => {
-
       const exists = prev.includes(lessonId);
-
       sound.playClick();
-
       return exists
         ? prev.filter(id => id !== lessonId)
         : [...prev, lessonId];
-
     });
   };
 
@@ -151,13 +132,10 @@ export function CourseProvider({ children }) {
     lessonId,
     completed = true
   ) => {
-
     let newlyFinishedCourse = false;
 
     setCourses(prevCourses => {
-
       return prevCourses.map(course => {
-
         if (course.id !== courseId) {
           return course;
         }
@@ -167,23 +145,19 @@ export function CourseProvider({ children }) {
           : [];
 
         const updatedModules = modules.map(module => {
-
           const lessons = Array.isArray(module?.lessons)
             ? module.lessons
             : [];
 
           return {
             ...module,
-
             lessons: lessons.map(lesson => {
-
               if (lesson.id === lessonId) {
                 return {
                   ...lesson,
                   completed
                 };
               }
-
               return lesson;
             })
           };
@@ -191,11 +165,10 @@ export function CourseProvider({ children }) {
 
         // Calculate course completion
         const allLessons = updatedModules.flatMap(
-          module => module.lessons
+          module => module.lessons || []
         );
 
         const total = allLessons.length;
-
         const doneCount = allLessons.filter(
           lesson => lesson.completed
         ).length;
@@ -207,9 +180,7 @@ export function CourseProvider({ children }) {
           ...course,
           modules: updatedModules
         };
-
       });
-
     });
 
     if (completed) {
@@ -223,7 +194,6 @@ export function CourseProvider({ children }) {
 
   // Get course statistics
   const getCourseStats = (courseId) => {
-
     const course = courses.find(
       c => c.id === courseId
     );
@@ -245,21 +215,16 @@ export function CourseProvider({ children }) {
       : [];
 
     modules.forEach(module => {
-
       const lessons = Array.isArray(module?.lessons)
         ? module.lessons
         : [];
 
       lessons.forEach(lesson => {
-
         totalLessons++;
-
         if (lesson?.completed) {
           completedLessons++;
         }
-
       });
-
     });
 
     const progress = totalLessons > 0
@@ -283,7 +248,6 @@ export function CourseProvider({ children }) {
     courseId,
     currentLessonId
   ) => {
-
     const course = courses.find(
       c => c.id === courseId
     );
@@ -321,7 +285,6 @@ export function CourseProvider({ children }) {
     courseId,
     currentLessonId
   ) => {
-
     const course = courses.find(
       c => c.id === courseId
     );
@@ -392,7 +355,6 @@ export function CourseProvider({ children }) {
 
 // Custom hook
 export function useCourses() {
-
   const context = useContext(CourseContext);
 
   if (!context) {

@@ -25,7 +25,7 @@ import './DashboardPage.css';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { courses, getCourseStats } = useCourses();
+  const { courses, getCourseStats, isEnrolled } = useCourses();
   const navigate = useNavigate();
 
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -36,10 +36,13 @@ export default function DashboardPage() {
   };
 
   // Continue Learning Courses (Enrolled courses)
-  const continueCourses = courses.slice(0, 5).map(c => ({
-    ...c,
-    stats: getCourseStats(c.id)
-  }));
+  const continueCourses = courses
+    .filter(c => isEnrolled(c.id))
+    .slice(0, 5)
+    .map(c => ({
+      ...c,
+      stats: getCourseStats(c.id)
+    }));
 
   const pendingAssignments = DEMO_ASSIGNMENTS.filter(a => a.status === 'Pending').slice(0, 3);
   const upcomingTasks = DEMO_PLANNER_TASKS.filter(t => !t.completed).slice(0, 4);
@@ -61,7 +64,7 @@ export default function DashboardPage() {
           </h1>
 
           <p className="dashboard-banner-subtitle">
-            Ready to continue your learning journey? 14 lessons left across your curriculum.
+            Ready to continue your learning journey? Track lessons, master new skills, and earn certificates.
           </p>
 
           {/* Motivational Quote pill */}
@@ -119,7 +122,7 @@ export default function DashboardPage() {
 
         <StatCard
           title="Active Courses"
-          value="6 Active"
+          value={`${continueCourses.length} Active`}
           subtext="Enrolled & registered"
           icon={GraduationCap}
           colorTheme="cyan"
@@ -264,69 +267,81 @@ export default function DashboardPage() {
         </div>
 
         {/* Horizontal Scroll Grid of Courses */}
-        <div className="dashboard-continue-grid">
-          {continueCourses.map((course) => {
-            const stats = course.stats;
-            const remainingLessons = stats.totalLessons - stats.completedLessons;
+        {continueCourses.length === 0 ? (
+          <div className="glass-panel" style={{ padding: '36px 24px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '0.95rem' }}>
+              You haven't enrolled in any courses yet. Browse our course catalog to start learning!
+            </p>
+            <Link to="/courses" className="gradient-border-btn" style={{ display: 'inline-flex', padding: '9px 20px' }}>
+              <span>Explore Courses</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        ) : (
+          <div className="dashboard-continue-grid">
+            {continueCourses.map((course) => {
+              const stats = course.stats;
+              const remainingLessons = stats.totalLessons - stats.completedLessons;
 
-            return (
-              <div
-                key={course.id}
-                className="glass-panel glass-panel-hover dashboard-continue-card"
-              >
-                <div>
-                  <div className="dashboard-continue-card-top">
-                    <span className="dashboard-continue-category">
-                      {course.category}
-                    </span>
+              return (
+                <div
+                  key={course.id}
+                  className="glass-panel glass-panel-hover dashboard-continue-card"
+                >
+                  <div>
+                    <div className="dashboard-continue-card-top">
+                      <span className="dashboard-continue-category">
+                        {course.category}
+                      </span>
 
-                    <span
-                      className="dashboard-continue-percent"
-                      style={{
-                        color: stats.isCompleted ? 'var(--emerald-accent)' : 'var(--cyan-accent)'
-                      }}
+                      <span
+                        className="dashboard-continue-percent"
+                        style={{
+                          color: stats.isCompleted ? 'var(--emerald-accent)' : 'var(--cyan-accent)'
+                        }}
+                      >
+                        {stats.progress}%
+                      </span>
+                    </div>
+
+                    <h3 className="dashboard-continue-title">
+                      {course.title}
+                    </h3>
+
+                    <div className="dashboard-continue-instructor">
+                      Instructor: {course.instructor.name}
+                    </div>
+
+                    <ProgressBar
+                      progress={stats.progress}
+                      height={6}
+                      colorGradient={
+                        stats.isCompleted
+                          ? 'linear-gradient(90deg, #10B981, #34D399)'
+                          : 'linear-gradient(90deg, #8B5CF6, #22D3EE)'
+                      }
+                    />
+
+                    <div className="dashboard-continue-meta">
+                      <span>{remainingLessons > 0 ? `${remainingLessons} lessons left` : 'Completed ✓'}</span>
+                      <span>{stats.completedLessons}/{stats.totalLessons}</span>
+                    </div>
+                  </div>
+
+                  <div className="dashboard-continue-action">
+                    <button
+                      onClick={() => navigate(`/learn/${course.id}`)}
+                      className="gradient-border-btn dashboard-continue-btn"
                     >
-                      {stats.progress}%
-                    </span>
-                  </div>
-
-                  <h3 className="dashboard-continue-title">
-                    {course.title}
-                  </h3>
-
-                  <div className="dashboard-continue-instructor">
-                    Instructor: {course.instructor.name}
-                  </div>
-
-                  <ProgressBar
-                    progress={stats.progress}
-                    height={6}
-                    colorGradient={
-                      stats.isCompleted
-                        ? 'linear-gradient(90deg, #10B981, #34D399)'
-                        : 'linear-gradient(90deg, #8B5CF6, #22D3EE)'
-                    }
-                  />
-
-                  <div className="dashboard-continue-meta">
-                    <span>{remainingLessons > 0 ? `${remainingLessons} lessons left` : 'Completed ✓'}</span>
-                    <span>{stats.completedLessons}/{stats.totalLessons}</span>
+                      <Play size={14} fill="currentColor" />
+                      <span>{stats.isCompleted ? 'Review Lectures' : 'Continue'}</span>
+                    </button>
                   </div>
                 </div>
-
-                <div className="dashboard-continue-action">
-                  <button
-                    onClick={() => navigate(`/learn/${course.id}`)}
-                    className="gradient-border-btn dashboard-continue-btn"
-                  >
-                    <Play size={14} fill="currentColor" />
-                    <span>{stats.isCompleted ? 'Review Lectures' : 'Continue'}</span>
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Two Column Bottom Grid: Upcoming Deadlines & Recent Notices */}

@@ -1,4 +1,3 @@
-
 import { DEMO_COURSES } from '../data/demoCourses';
 import { DEMO_ASSIGNMENTS } from '../data/demoAssignments';
 import { DEMO_QUIZZES } from '../data/demoQuizzes';
@@ -10,21 +9,19 @@ import { DEMO_PLANNER_TASKS } from '../data/demoPlanner';
 export const STORAGE_KEYS = {
   USER: 'learnsphere_user',
   COURSES: 'learnsphere_courses',
+  ENROLLED: 'learnsphere_enrolled',
   PROGRESS: 'learnsphere_progress',
   ASSIGNMENTS: 'learnsphere_assignments',
   QUIZZES: 'learnsphere_quizzes',
   NOTES: 'learnsphere_notes',
+  ANNOUNCEMENTS: 'learnsphere_announcements',
   NOTIFICATIONS: 'learnsphere_notifications',
   THEME: 'learnsphere_theme',
   ACHIEVEMENTS: 'learnsphere_achievements',
   PLANNER: 'learnsphere_planner',
   BOOKMARKS: 'learnsphere_bookmarks',
   WATCH_LATER: 'learnsphere_watch_later',
-  INTRO_SEEN: 'learnsphere_intro_seen',
-  CART: 'learnsphere_cart',
-  ORDERS: 'learnsphere_orders',
-  CURRENT_ORDER: 'learnsphere_current_order',
-  PURCHASED_COURSES: 'learnsphere_purchased_courses'
+  INTRO_SEEN: 'learnsphere_intro_seen'
 };
 
 export const DEFAULT_USER = {
@@ -38,7 +35,7 @@ export const DEFAULT_USER = {
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
   bio: 'Passionate full-stack developer, algorithmic problem solver, and AI enthusiast aiming to build impactful educational tech.',
   gpa: '4.8',
-  enrolledCourses: ['java-programming', 'react-development', 'data-structures', 'python-fundamentals', 'database-management', 'web-development'],
+  enrolledCourses: ['java-programming', 'react-development'],
   streak: 7,
   totalLearningHours: 28.5
 };
@@ -66,7 +63,8 @@ export function setStoredData(key, value) {
 // Reset all demo data to fresh initial state
 export function resetDemoData() {
   localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(DEFAULT_USER));
-  localStorage.setItem(STORAGE_KEYS.COURSES, JSON.stringify(DEMO_COURSES));
+  localStorage.setItem(STORAGE_KEYS.COURSES, JSON.stringify(DEMO_COURSES) || []);
+  localStorage.setItem(STORAGE_KEYS.ENROLLED, JSON.stringify(['java-programming', 'react-development']));
   localStorage.setItem(STORAGE_KEYS.ASSIGNMENTS, JSON.stringify(DEMO_ASSIGNMENTS));
   localStorage.setItem(STORAGE_KEYS.QUIZZES, JSON.stringify(DEMO_QUIZZES));
   localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(DEMO_NOTES));
@@ -75,8 +73,4 @@ export function resetDemoData() {
   localStorage.setItem(STORAGE_KEYS.PLANNER, JSON.stringify(DEMO_PLANNER_TASKS));
   localStorage.setItem(STORAGE_KEYS.BOOKMARKS, JSON.stringify(['react-l7', 'java-l10']));
   localStorage.setItem(STORAGE_KEYS.WATCH_LATER, JSON.stringify(['dsa-l6', 'db-l4']));
-  localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify([]));
-  localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
-  localStorage.removeItem(STORAGE_KEYS.CURRENT_ORDER);
-  localStorage.setItem(STORAGE_KEYS.PURCHASED_COURSES, JSON.stringify([]));
 }

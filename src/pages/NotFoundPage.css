@@ -1,0 +1,62 @@
+/* ==========================================================================
+   NotFoundPage Styles
+   ========================================================================== */
+
+.notfound-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.notfound-portal-orb {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(34, 211, 238, 0.2));
+  border: 2px solid rgba(167, 139, 250, 0.4);
+  box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.notfound-code {
+  font-size: 4.5rem;
+  font-weight: 900;
+  font-family: var(--font-heading);
+  background: linear-gradient(135deg, #FFFFFF, #A78BFA, #22D3EE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.notfound-title {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  max-width: 580px;
+  margin-bottom: 14px;
+}
+
+.notfound-desc {
+  color: var(--text-secondary);
+  max-width: 480px;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.notfound-btn-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}

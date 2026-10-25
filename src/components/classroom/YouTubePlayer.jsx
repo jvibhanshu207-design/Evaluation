@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './YouTubePlayer.css';
 
 export default function YouTubePlayer({ videoId, title }) {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+  }, [videoId]);
 
   return (
     <div className="youtube-player-wrapper">

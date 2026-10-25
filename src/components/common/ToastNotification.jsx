@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, AlertCircle, ShoppingBag, Info, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 import './ToastNotification.css';
 
 export default function ToastNotification({ toasts, onDismiss }) {
@@ -14,25 +14,24 @@ export default function ToastNotification({ toasts, onDismiss }) {
       {toasts.map((toast) => {
         const isSuccess = toast.type === 'success' || !toast.type;
         const isError = toast.type === 'error';
-        const isCart = toast.type === 'cart';
 
         const accentColor = isError
           ? 'var(--rose-accent, #FB7185)'
-          : isCart
-          ? 'var(--cyan-accent, #22D3EE)'
-          : 'var(--emerald-accent, #34D399)';
+          : isSuccess
+          ? 'var(--emerald-accent, #34D399)'
+          : 'var(--cyan-accent, #22D3EE)';
 
         const borderColor = isError
           ? 'rgba(251, 113, 133, 0.4)'
-          : isCart
-          ? 'rgba(34, 211, 238, 0.4)'
-          : 'rgba(52, 211, 153, 0.4)';
+          : isSuccess
+          ? 'rgba(52, 211, 153, 0.4)'
+          : 'rgba(34, 211, 238, 0.4)';
 
         const bgGlow = isError
           ? 'rgba(251, 113, 133, 0.12)'
-          : isCart
-          ? 'rgba(34, 211, 238, 0.12)'
-          : 'rgba(52, 211, 153, 0.12)';
+          : isSuccess
+          ? 'rgba(52, 211, 153, 0.12)'
+          : 'rgba(34, 211, 238, 0.12)';
 
         return (
           <div
@@ -56,8 +55,6 @@ export default function ToastNotification({ toasts, onDismiss }) {
             >
               {isError ? (
                 <AlertCircle size={20} />
-              ) : isCart ? (
-                <ShoppingBag size={20} />
               ) : isSuccess ? (
                 <CheckCircle2 size={20} />
               ) : (
