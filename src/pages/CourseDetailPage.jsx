@@ -9,16 +9,21 @@ import {
   PlayCircle,
   ArrowRight,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  ShoppingBag
 } from 'lucide-react';
 import { useCourses } from '../context/CourseContext';
+import { useCart } from '../context/CartContext';
 import EnrollmentModal from '../components/courses/EnrollmentModal';
+import { useLanguage, useDynamicText } from '../context/LanguageContext';
 import ProgressBar from '../components/common/ProgressBar';
 import './CourseDetailPage.css';
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
   const { courses, isEnrolled, getCourseStats, enrollCourse } = useCourses();
+  const { isInCart, addToCart, openCart } = useCart();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'curriculum' | 'instructor' | 'reviews'
@@ -33,6 +38,8 @@ export default function CourseDetailPage() {
   const [showEnrollModal, setShowEnrollModal] = useState(false);
 
   const course = courses.find((c) => c.id === courseId);
+  const translatedTitle = useDynamicText(course?.title || '');
+  const translatedDesc = useDynamicText(course?.description || '');
 
   if (!course) {
     return (
@@ -55,15 +62,21 @@ export default function CourseDetailPage() {
     );
   }
 
+
   const enrolled = isEnrolled(course.id);
   const stats = getCourseStats(course.id);
   const price = Number(course.price || 49.99);
   const originalPrice = Number(course.originalPrice || 89.99);
   const discountPercent = Math.max(0, Math.round(((originalPrice - price) / originalPrice) * 100));
 
+  const isFree = course.isFree || course.price === 0;
   const handleEnrollNow = () => {
-    enrollCourse(course.id);
-    setShowEnrollModal(true);
+    if (isFree) {
+      enrollCourse(course.id);
+      setShowEnrollModal(true);
+    } else {
+      navigate(`/checkout/${course.id}`);
+    }
   };
 
   const toggleModule = (modId) => {
@@ -92,11 +105,11 @@ export default function CourseDetailPage() {
           </div>
 
           <h1 className="course-hero-title">
-            {course.title}
+            {translatedTitle}
           </h1>
 
           <p className="course-hero-desc">
-            {course.description}
+            {translatedDesc}
           </p>
 
           {/* Metadata badges */}
@@ -190,7 +203,7 @@ export default function CourseDetailPage() {
                   className="gradient-border-btn"
                   style={{ width: '100%', justifyContent: 'center', padding: '12px', fontSize: '0.98rem', marginTop: '6px' }}
                 >
-                  <span>{stats.isCompleted ? 'Review Lectures' : 'Continue Learning'}</span>
+                  <span>{stats.isCompleted ? t('reviewLectures', 'Review Lectures') : t('continueLearning', 'Continue Learning')}</span>
                   <ArrowRight size={17} />
                 </button>
               </div>
@@ -202,9 +215,46 @@ export default function CourseDetailPage() {
                   className="gradient-border-btn"
                   style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '1.02rem' }}
                 >
-                  <span>Enroll Now — Free Access</span>
+                  <span>{isFree ? "Enroll Now — Free Access" : `Enroll & Checkout — $${price.toFixed(2)}`}</span>
                   <ArrowRight size={18} />
                 </button>
+
+                {!isFree && (
+                  isInCart(course.id) ? (
+                    <button
+                      type="button"
+                      onClick={openCart}
+                      className="glass-btn"
+                      style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        padding: '11px',
+                        fontSize: '0.94rem',
+                        borderColor: 'rgba(34, 211, 238, 0.45)',
+                        color: 'var(--cyan-accent)',
+                        background: 'rgba(34, 211, 238, 0.1)'
+                      }}
+                    >
+                      <ShoppingBag size={17} />
+                      <span>Added to Cart — View Cart</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => addToCart(course)}
+                      className="glass-btn"
+                      style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        padding: '11px',
+                        fontSize: '0.94rem'
+                      }}
+                    >
+                      <ShoppingBag size={17} />
+                      <span>Add to Shopping Cart</span>
+                    </button>
+                  )
+                )}
               </div>
             )}
 

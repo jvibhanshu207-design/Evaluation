@@ -18,10 +18,14 @@ import { useAuth } from '../context/AuthContext';
 import { useCourses } from '../context/CourseContext';
 import CertificateModal from '../components/certificate/CertificateModal';
 import { sound } from '../utils/sound';
+import { usePayment } from '../context/PaymentContext';
+import { Receipt, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function ProfilePage() {
   const { user, updateProfile } = useAuth();
   const { enrolledCourses } = useCourses();
+  const { transactions } = usePayment();
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.name || 'Vibhanshu Jain');
@@ -443,6 +447,136 @@ export default function ProfilePage() {
                 </button>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      {/* Demonstration Transaction & Payment History */}
+      <div className="glass-panel" style={{ padding: '30px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Receipt size={20} color="var(--cyan-accent)" />
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Demo Payment & Enrollment History</h3>
+          </div>
+          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            Simulated demonstration transactions ({(transactions || []).length})
+          </span>
+        </div>
+
+        {(!transactions || transactions.length === 0) ? (
+          <div style={{ padding: '30px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            No transactions recorded yet. Enroll in paid courses through Checkout to see records here.
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {transactions.map((txn) => {
+              const isCompleted = txn.status === 'Completed';
+              const isFailed = txn.status === 'Failed';
+              return (
+                <div
+                  key={txn.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '16px 20px',
+                    borderRadius: 'var(--radius-md)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid var(--card-border)',
+                    flexWrap: 'wrap',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div
+                      style={{
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '50%',
+                        backgroundColor: isCompleted
+                          ? 'rgba(16, 185, 129, 0.15)'
+                          : isFailed
+                          ? 'rgba(239, 68, 68, 0.15)'
+                          : 'rgba(255, 255, 255, 0.08)',
+                        color: isCompleted
+                          ? 'var(--emerald-accent)'
+                          : isFailed
+                          ? 'var(--rose-accent)'
+                          : 'var(--text-secondary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}
+                    >
+                      {isCompleted ? <CheckCircle2 size={20} /> : <Receipt size={20} />}
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '0.96rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        {txn.courseTitle}
+                      </div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <span style={{ fontFamily: 'var(--font-mono, monospace)', color: 'var(--cyan-accent)' }}>
+                          {txn.id}
+                        </span>
+                        <span>•</span>
+                        <span>{txn.paymentMethodLabel || txn.paymentMethod}</span>
+                        <span>•</span>
+                        <span>{new Date(txn.timestamp).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                        ${typeof txn.amount === 'number' ? txn.amount.toFixed(2) : txn.amount} USD
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          padding: '2px 8px',
+                          borderRadius: '9999px',
+                          backgroundColor: isCompleted
+                            ? 'rgba(16, 185, 129, 0.15)'
+                            : isFailed
+                            ? 'rgba(239, 68, 68, 0.15)'
+                            : 'rgba(255, 255, 255, 0.1)',
+                          color: isCompleted
+                            ? 'var(--emerald-accent)'
+                            : isFailed
+                            ? 'var(--rose-accent)'
+                            : 'var(--text-muted)'
+                        }}
+                      >
+                        {txn.status}
+                      </span>
+                    </div>
+
+                    {isCompleted ? (
+                      <Link
+                        to={`/learn/${txn.courseId}`}
+                        className="glass-btn"
+                        style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+                      >
+                        <span>Open Course</span>
+                        <ExternalLink size={13} />
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/checkout/${txn.courseId}`}
+                        className="glass-btn"
+                        style={{ padding: '6px 12px', fontSize: '0.8rem', color: 'var(--rose-accent)' }}
+                      >
+                        <span>Retry</span>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

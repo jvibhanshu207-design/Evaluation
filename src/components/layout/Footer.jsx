@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import Logo from '../common/Logo';
 import './Footer.css';
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -11,22 +11,15 @@ export default function Footer() {
       <div className="footer-grid">
         {/* Brand Column */}
         <div className="footer-brand-col">
-          <Link to="/" className="footer-brand-link">
-            <div className="footer-brand-icon">
-              <Sparkles size={20} />
-            </div>
-            <span className="footer-brand-title">
-              Learn<span className="gradient-text">Sphere</span>
-            </span>
-          </Link>
+          <Logo size="md" to="/" />
 
           <p className="footer-desc">
-            An intelligent, next-generation learning ecosystem uniting interactive courses, cognitive AI study tutoring, timed evaluations, and verifiable credentials.
+            An intelligent, next-generation learning ecosystem uniting interactive courses, structured curriculum, timed evaluations, and verifiable credentials.
           </p>
 
           <div className="footer-status-pill">
             <span className="footer-status-dot" />
-            <span>All Systems Operational • v2.4 Live</span>
+            <span>All Systems Operational • v2.6 Live</span>
           </div>
         </div>
 
@@ -43,7 +36,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to="/my-courses" className="footer-link">
-                My Purchased Courses
+                My Enrolled Courses
               </Link>
             </li>
             <li>

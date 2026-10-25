@@ -24,20 +24,20 @@ export const FAQS_DATA = [
     tag: 'Certificate'
   },
   {
-    id: 'ai-tutor',
-    category: 'AI Tutor',
-    question: 'How does the AI Tutor work?',
-    answer:
-      'The AI Tutor (powered by Google Gemini) is an intelligent assistant embedded throughout the platform. You can ask it to explain concepts, summarize lesson content, generate practice questions, or get hints on assignments. Access it from the floating AI button or inside any classroom session.',
-    tag: 'AI'
-  },
-  {
     id: 'smart-learning-hub',
-    category: 'AI Tutor',
+    category: 'Smart Learning',
     question: 'What is the Smart Learning Hub?',
     answer:
-      'The Smart Learning Hub (/smart-learning) is a personalized study assistant that identifies your weak topics, generates adaptive practice quizzes, and builds a custom study path. It uses 3D flashcards, spaced repetition, and AI-driven insights to accelerate your understanding.',
+      'The Smart Learning Hub (/smart-learning) is a personalized study tool that helps you review concepts with 3D flashcards, assesses weak topics, and provides adaptive practice quizzes with spaced repetition to accelerate your understanding.',
     tag: 'Smart Learning'
+  },
+  {
+    id: 'flashcards-system',
+    category: 'Smart Learning',
+    question: 'How do 3D Flashcards work?',
+    answer:
+      'Interactive 3D flashcards let you test recall on core computer science and web development topics. Flip cards with a single click, mark mastered cards, and review key definitions at your own pace.',
+    tag: 'Flashcards'
   },
   {
     id: 'progress-tracking',
@@ -69,7 +69,7 @@ export const FAQ_CATEGORIES = [
   'All',
   'Enrollment & Access',
   'Certificates',
-  'AI Tutor',
+  'Smart Learning',
   'Progress & Achievements',
   'Study Tools'
 ];

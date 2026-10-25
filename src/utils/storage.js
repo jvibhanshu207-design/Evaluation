@@ -21,7 +21,8 @@ export const STORAGE_KEYS = {
   PLANNER: 'learnsphere_planner',
   BOOKMARKS: 'learnsphere_bookmarks',
   WATCH_LATER: 'learnsphere_watch_later',
-  INTRO_SEEN: 'learnsphere_intro_seen'
+  INTRO_SEEN: 'learnsphere_intro_seen',
+  CART: 'learnsphere_cart'
 };
 
 export const DEFAULT_USER = {

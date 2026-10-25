@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, BookOpen, ArrowRight, Sparkles } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { sound } from '../utils/sound';
+import Logo from '../components/common/Logo';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -67,20 +68,8 @@ export default function SignupPage() {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div
-            style={{
-              width: '52px',
-              height: '52px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #8B5CF6, #22D3EE)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 14px auto',
-              boxShadow: '0 0 25px rgba(139, 92, 246, 0.6)'
-            }}
-          >
-            <Sparkles size={26} color="white" />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+            <Logo size="lg" to="/" />
           </div>
 
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>

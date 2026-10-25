@@ -64,7 +64,7 @@ export default function FaqSection() {
         </h2>
 
         <p className="faq-subtitle">
-          Everything you need to know about navigating LearnSphere, AI study assistance, interactive courses, and verified credentials.
+          Everything you need to know about navigating LearnSphere, interactive courses, study tools, and verified credentials.
         </p>
       </div>
 
@@ -223,7 +223,7 @@ export default function FaqSection() {
           <div>
             <div className="faq-cta-title">Still have questions?</div>
             <div className="faq-cta-desc">
-              Can't find the answer you need? Our AI Study Tutor is ready to help 24/7.
+              Can't find the answer you need? Explore the student dashboard and course catalog to get started immediately.
             </div>
           </div>
         </div>

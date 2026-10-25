@@ -1,0 +1,67 @@
+/* Logo Component Styles */
+
+.learnsphere-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  user-select: none;
+}
+
+.learnsphere-logo-link:hover {
+  transform: translateY(-1px);
+}
+
+.learnsphere-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.learnsphere-logo-icon.sm {
+  width: 32px;
+  height: 32px;
+}
+
+.learnsphere-logo-icon.md {
+  width: 42px;
+  height: 42px;
+}
+
+.learnsphere-logo-icon.lg {
+  width: 58px;
+  height: 58px;
+}
+
+.learnsphere-logo-text {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text-primary, #FFFFFF);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.learnsphere-logo-text.sm {
+  font-size: 1.15rem;
+}
+
+.learnsphere-logo-text.md {
+  font-size: 1.35rem;
+}
+
+.learnsphere-logo-text.lg {
+  font-size: 1.85rem;
+}
+
+.learnsphere-logo-gradient {
+  background: linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

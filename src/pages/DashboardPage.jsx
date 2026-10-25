@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   GraduationCap,
@@ -11,14 +11,16 @@ import {
   CalendarCheck,
   Play,
   Timer,
-  Brain,
-  Bot
+  Brain
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCourses } from '../context/CourseContext';
+import { useLanguage } from '../context/LanguageContext';
 import { DEMO_ANALYTICS } from '../data/demoAnalytics';
 import { DEMO_ASSIGNMENTS } from '../data/demoAssignments';
+import { DEMO_QUIZZES } from '../data/demoQuizzes';
 import { DEMO_PLANNER_TASKS } from '../data/demoPlanner';
+import { getStoredData, STORAGE_KEYS } from '../utils/storage';
 import StatCard from '../components/common/StatCard';
 import ProgressBar from '../components/common/ProgressBar';
 import './DashboardPage.css';
@@ -26,6 +28,7 @@ import './DashboardPage.css';
 export default function DashboardPage() {
   const { user } = useAuth();
   const { courses, getCourseStats, isEnrolled } = useCourses();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -36,15 +39,59 @@ export default function DashboardPage() {
   };
 
   // Continue Learning Courses (Enrolled courses)
-  const continueCourses = courses
-    .filter(c => isEnrolled(c.id))
-    .slice(0, 5)
-    .map(c => ({
-      ...c,
-      stats: getCourseStats(c.id)
-    }));
+  const continueCourses = useMemo(() => {
+    return courses
+      .filter(c => isEnrolled(c.id))
+      .slice(0, 5)
+      .map(c => ({
+        ...c,
+        stats: getCourseStats(c.id)
+      }));
+  }, [courses, isEnrolled, getCourseStats]);
 
-  const pendingAssignments = DEMO_ASSIGNMENTS.filter(a => a.status === 'Pending').slice(0, 3);
+  // Overall progress calculation across enrolled courses
+  const { overallPercentage, totalLessons, completedLessons } = useMemo(() => {
+    const total = continueCourses.reduce((sum, c) => sum + (c.stats?.totalLessons || 0), 0);
+    const completed = continueCourses.reduce((sum, c) => sum + (c.stats?.completedLessons || 0), 0);
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    return { overallPercentage: pct, totalLessons: total, completedLessons: completed };
+  }, [continueCourses]);
+
+  // Stored assignments & quizzes
+  const storedAssignments = useMemo(() => {
+    return getStoredData(STORAGE_KEYS.ASSIGNMENTS, DEMO_ASSIGNMENTS);
+  }, []);
+
+  const storedQuizzes = useMemo(() => {
+    return getStoredData(STORAGE_KEYS.QUIZZES, DEMO_QUIZZES);
+  }, []);
+
+  const pendingAssignmentsCount = useMemo(() => {
+    return Array.isArray(storedAssignments)
+      ? storedAssignments.filter(a => a.status === 'Pending' || a.status === 'In Progress').length
+      : 0;
+  }, [storedAssignments]);
+
+  const pendingQuizzesCount = useMemo(() => {
+    return Array.isArray(storedQuizzes)
+      ? storedQuizzes.filter(q => !q.completed).length
+      : 0;
+  }, [storedQuizzes]);
+
+  const avgQuizScore = useMemo(() => {
+    if (!Array.isArray(storedQuizzes)) return 84;
+    const completed = storedQuizzes.filter(q => q.completed && typeof q.score === 'number');
+    if (completed.length === 0) return 84;
+    const sum = completed.reduce((acc, q) => acc + q.score, 0);
+    return Math.round(sum / completed.length);
+  }, [storedQuizzes]);
+
+  const pendingAssignmentsList = useMemo(() => {
+    return Array.isArray(storedAssignments)
+      ? storedAssignments.filter(a => a.status === 'Pending' || a.status === 'In Progress').slice(0, 3)
+      : [];
+  }, [storedAssignments]);
+
   const upcomingTasks = DEMO_PLANNER_TASKS.filter(t => !t.completed).slice(0, 4);
 
   return (
@@ -56,11 +103,11 @@ export default function DashboardPage() {
 
         <div className="dashboard-banner-content">
           <div className="dashboard-banner-tag">
-            <span>ACADEMIC SEMESTER AUTUMN 2026</span>
+            <span>{t("academicSemester", "ACADEMIC SEMESTER AUTUMN 2026")}</span>
           </div>
 
           <h1 className="dashboard-banner-title">
-            Good Morning, {user?.name?.split(' ')[0] || 'Vibhanshu'} 👋
+            {t("goodMorning", "Good Morning")}, {user?.name?.split(' ')[0] || "Vibhanshu"} 👋
           </h1>
 
           <p className="dashboard-banner-subtitle">
@@ -89,7 +136,7 @@ export default function DashboardPage() {
             <div className="dashboard-streak-label">
               <Flame size={22} fill="#FBBF24" color="#FBBF24" />
               <span className="dashboard-streak-title">
-                7 Day Streak!
+                {user?.streak || 7} Day Streak!
               </span>
             </div>
             <span className="dashboard-streak-status">Active</span>
@@ -109,21 +156,21 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 6 Dashboard Widgets */}
+      {/* 6 Dynamic Dashboard Widgets */}
       <div className="dashboard-widgets-grid">
         <StatCard
-          title="Overall Progress"
-          value="72%"
-          subtext="18 / 25 modules done"
+          title={t("overallProgress", "Overall Progress")}
+          value={`${overallPercentage}%`}
+          subtext={totalLessons > 0 ? `${completedLessons} / ${totalLessons} lessons done` : 'Enroll in courses to begin'}
           isCircular={true}
-          circularProgress={72}
+          circularProgress={overallPercentage}
           colorTheme="purple"
         />
 
         <StatCard
-          title="Active Courses"
+          title={t("activeCourses", "Active Courses")}
           value={`${continueCourses.length} Active`}
-          subtext="Enrolled & registered"
+          subtext={`${continueCourses.length} enrolled in curriculum`}
           icon={GraduationCap}
           colorTheme="cyan"
           badge="+2 this term"
@@ -131,19 +178,19 @@ export default function DashboardPage() {
         />
 
         <StatCard
-          title="Assignments"
-          value="4 Pending"
-          subtext="Next due: Tomorrow"
+          title={t("assignments", "Assignments")}
+          value={`${pendingAssignmentsCount} Pending`}
+          subtext={pendingAssignmentsCount > 0 ? "Next due: Tomorrow" : "All caught up!"}
           icon={FileCheck2}
           colorTheme="pink"
-          badge="Action required"
-          badgeType="warning"
+          badge={pendingAssignmentsCount > 0 ? "Action required" : "Complete"}
+          badgeType={pendingAssignmentsCount > 0 ? "warning" : "positive"}
         />
 
         <StatCard
-          title="Quizzes"
-          value="2 Upcoming"
-          subtext="Avg score: 84%"
+          title={t("quizzes", "Quizzes")}
+          value={`${pendingQuizzesCount} Upcoming`}
+          subtext={`Avg score: ${avgQuizScore}%`}
           icon={HelpCircle}
           colorTheme="amber"
           badge="Top 5%"
@@ -151,8 +198,8 @@ export default function DashboardPage() {
         />
 
         <StatCard
-          title="Learning Hours"
-          value="28.5 hrs"
+          title={t("learningHours", "Learning Hours")}
+          value={`${user?.totalLearningHours || 28.5} hrs`}
           subtext="Logged this month"
           icon={Clock}
           colorTheme="emerald"
@@ -161,8 +208,8 @@ export default function DashboardPage() {
         />
 
         <StatCard
-          title="Current Streak"
-          value="7 Days"
+          title={t("currentStreak", "Current Streak")}
+          value={`${user?.streak || 7} Days`}
           subtext="Personal record: 14d"
           icon={Flame}
           colorTheme="amber"
@@ -173,33 +220,30 @@ export default function DashboardPage() {
 
       {/* 🚀 Next-Gen Feature Launchpad */}
       <div className="dashboard-launchpad-grid">
-        {/* Card 1: AI Assistant */}
-        <div
-          onClick={() => {
-            const btn = document.getElementById('floating-ai-button');
-            if (btn) btn.click();
-          }}
+        {/* Card 1: Study Planner & Notes */}
+        <Link
+          to="/planner"
           className="glass-panel dashboard-launchpad-card card-ai"
         >
           <div className="dashboard-launchpad-top">
             <div className="dashboard-launchpad-icon icon-ai">
-              <Bot size={22} />
+              <CalendarCheck size={22} />
             </div>
             <span className="dashboard-launchpad-badge badge-ai">
-              AI READY
+              SCHEDULE
             </span>
           </div>
           <div>
-            <h3 className="dashboard-launchpad-title">LearnSphere AI Tutor</h3>
+            <h3 className="dashboard-launchpad-title">Study Planner & Schedule</h3>
             <p className="dashboard-launchpad-desc">
-              Explain topics, summarize lessons, auto-generate quizzes and notes on demand.
+              Organize daily milestones, schedule study blocks, and keep exam preparation on track.
             </p>
           </div>
           <div className="dashboard-launchpad-cta cta-ai">
-            <span>Launch AI Assistant (Ctrl + J)</span>
+            <span>Open Study Planner</span>
             <ArrowRight size={14} />
           </div>
-        </div>
+        </Link>
 
         {/* Card 2: Focus Room & Pomodoro */}
         <Link
@@ -257,11 +301,11 @@ export default function DashboardPage() {
         <div className="dashboard-section-header">
           <div className="dashboard-section-title-wrap">
             <div className="dashboard-section-dot" />
-            <h2 className="dashboard-section-title">Continue Learning</h2>
+            <h2 className="dashboard-section-title">{t("continueLearning", "Continue Learning")}</h2>
           </div>
 
           <Link to="/my-learning" className="dashboard-section-link">
-            <span>View All</span>
+            <span>{t("viewAll", "View All")}</span>
             <ArrowRight size={14} />
           </Link>
         </div>
@@ -351,15 +395,15 @@ export default function DashboardPage() {
           <div className="dashboard-panel-header">
             <div className="dashboard-panel-title-wrap">
               <FileCheck2 size={18} color="var(--primary-purple)" />
-              <h3 className="dashboard-panel-title">Upcoming Assignments</h3>
+              <h3 className="dashboard-panel-title">{t("upcomingAssignments", "Upcoming Assignments")}</h3>
             </div>
             <Link to="/assignments" className="dashboard-panel-link">
-              All ({DEMO_ASSIGNMENTS.length})
+              All ({storedAssignments.length})
             </Link>
           </div>
 
           <div className="dashboard-list">
-            {pendingAssignments.map((asg) => (
+            {pendingAssignmentsList.map((asg) => (
               <div key={asg.id} className="dashboard-list-item">
                 <div>
                   <div className="dashboard-item-title">
@@ -387,7 +431,7 @@ export default function DashboardPage() {
           <div className="dashboard-panel-header">
             <div className="dashboard-panel-title-wrap">
               <CalendarCheck size={18} color="var(--cyan-accent)" />
-              <h3 className="dashboard-panel-title">Smart Study Schedule</h3>
+              <h3 className="dashboard-panel-title">{t("smartStudySchedule", "Smart Study Schedule")}</h3>
             </div>
             <Link to="/planner" className="dashboard-panel-link">
               Planner →

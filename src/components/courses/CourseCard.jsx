@@ -1,26 +1,37 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Star, Users, Clock, ArrowRight } from 'lucide-react';
+import { Star, Users, Clock, ArrowRight, ShoppingBag } from 'lucide-react';
 import { useCourses } from '../../context/CourseContext';
+import { useCart } from '../../context/CartContext';
 import ProgressBar from '../common/ProgressBar';
+import { useLanguage, useDynamicText } from '../../context/LanguageContext';
 import './CourseCard.css';
 
 export default function CourseCard({ course }) {
   const { isEnrolled, getCourseStats, enrollCourse } = useCourses();
+  const { isInCart, addToCart, openCart } = useCart();
   const navigate = useNavigate();
 
+  const { t } = useLanguage();
+  const translatedTitle = useDynamicText(course.title);
   const enrolled = isEnrolled(course.id);
+  const inCart = isInCart(course.id);
   const stats = getCourseStats(course.id);
 
   const price = Number(course.price || 49.99);
   const originalPrice = Number(course.originalPrice || 89.99);
   const discountPercent = Math.max(0, Math.round(((originalPrice - price) / originalPrice) * 100));
 
+  const isFree = course.isFree || course.price === 0;
   const handleQuickEnroll = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    enrollCourse(course.id);
-    navigate(`/learn/${course.id}`);
+    if (isFree) {
+      enrollCourse(course.id);
+      navigate(`/learn/${course.id}`);
+    } else {
+      navigate(`/checkout/${course.id}`);
+    }
   };
 
   return (
@@ -29,7 +40,7 @@ export default function CourseCard({ course }) {
       <div className="course-card-thumb-wrap">
         <img
           src={course.thumbnail}
-          alt={course.title}
+          alt={translatedTitle}
           className="course-card-thumb"
         />
         {/* Gradient Overlay */}
@@ -138,7 +149,7 @@ export default function CourseCard({ course }) {
                   className="gradient-border-btn"
                   style={{ width: '100%', justifyContent: 'center', padding: '9px 16px', fontSize: '0.88rem' }}
                 >
-                  <span>{stats.isCompleted ? 'Review Course' : 'Continue Learning'}</span>
+                  <span>{stats.isCompleted ? t('reviewCourse', 'Review Course') : t('continueLearning', 'Continue Learning')}</span>
                   <ArrowRight size={15} />
                 </Link>
               </div>
@@ -150,27 +161,73 @@ export default function CourseCard({ course }) {
                 className="glass-btn"
                 style={{
                   flex: 1,
-                  padding: '9px 12px',
+                  padding: '9px 10px',
                   fontSize: '0.84rem',
                   justifyContent: 'center'
                 }}
               >
-                <span>Details</span>
+                <span>{t("details", "Details")}</span>
               </Link>
-              <button
-                type="button"
-                onClick={handleQuickEnroll}
-                className="gradient-border-btn"
-                style={{
-                  flex: 1.2,
-                  padding: '9px 12px',
-                  fontSize: '0.84rem',
-                  justifyContent: 'center'
-                }}
-              >
-                <span>Enroll Now</span>
-                <ArrowRight size={14} />
-              </button>
+
+              {isFree ? (
+                <button
+                  type="button"
+                  onClick={handleQuickEnroll}
+                  className="gradient-border-btn"
+                  style={{
+                    flex: 1.25,
+                    padding: '9px 12px',
+                    fontSize: '0.84rem',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <span>Enroll Free</span>
+                  <ArrowRight size={14} />
+                </button>
+              ) : inCart ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openCart();
+                  }}
+                  className="glass-btn"
+                  style={{
+                    flex: 1.25,
+                    padding: '9px 10px',
+                    fontSize: '0.84rem',
+                    justifyContent: 'center',
+                    borderColor: 'rgba(34, 211, 238, 0.45)',
+                    color: 'var(--cyan-accent)',
+                    background: 'rgba(34, 211, 238, 0.1)'
+                  }}
+                  title="Course is in your cart — click to view cart"
+                >
+                  <ShoppingBag size={14} />
+                  <span>In Cart</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToCart(course);
+                  }}
+                  className="gradient-border-btn"
+                  style={{
+                    flex: 1.25,
+                    padding: '9px 10px',
+                    fontSize: '0.84rem',
+                    justifyContent: 'center'
+                  }}
+                  title="Add course to cart"
+                >
+                  <ShoppingBag size={14} />
+                  <span>Add to Cart</span>
+                </button>
+              )}
             </div>
           )}
         </div>

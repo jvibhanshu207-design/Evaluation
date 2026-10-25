@@ -407,9 +407,10 @@ export const DEMO_COURSES = [
     duration: "16.0 hours",
     totalLessons: 8,
     thumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80",
-    badge: "Popular",
-    price: 39.99,
-    originalPrice: 69.99,
+    badge: "Free Access",
+    isFree: true,
+    price: 0,
+    originalPrice: 0,
     description: "Start coding with Python. Learn clean Pythonic syntax, list comprehensions, object-oriented concepts, and practical automation scripts.",
     overview: [
       "Python 3 installation, interactive shell, variables, and data types",

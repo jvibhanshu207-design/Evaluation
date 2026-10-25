@@ -4,6 +4,10 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { CourseProvider } from './context/CourseContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { FocusProvider } from './context/FocusContext';
+import { LanguageProvider } from './context/LanguageContext';
+import { PaymentProvider } from './context/PaymentContext';
+import { CartProvider } from './context/CartContext';
 
 import MainLayout from './components/layout/MainLayout';
 import CinematicIntro from './components/intro/CinematicIntro';
@@ -30,6 +34,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
 import MyCoursesPage from './pages/MyCoursesPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(() => {
@@ -51,45 +56,55 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <CourseProvider>
-          <NotificationProvider>
-            {showIntro && <CinematicIntro onComplete={handleCompleteIntro} />}
+      <LanguageProvider>
+        <AuthProvider>
+          <CourseProvider>
+            <CartProvider>
+              <PaymentProvider>
+              <NotificationProvider>
+                <FocusProvider>
+                  {showIntro && <CinematicIntro onComplete={handleCompleteIntro} />}
 
-            <BrowserRouter>
-              <Routes>
-                {/* Standalone Auth Pages */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                  <BrowserRouter>
+                    <Routes>
+                      {/* Standalone Auth Pages */}
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/signup" element={<SignupPage />} />
 
-                {/* Main App Layout */}
-                <Route element={<MainLayout onReplayIntro={handleReplayIntro} />}>
-                  <Route path="/" element={<LandingPage onReplayIntro={handleReplayIntro} />} />
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/courses" element={<CoursesPage />} />
-                  <Route path="/courses/:courseId" element={<CourseDetailPage />} />
-                  <Route path="/learn/:courseId" element={<ClassroomPage />} />
-                  <Route path="/learn/:courseId/lesson/:lessonId" element={<ClassroomPage />} />
-                  <Route path="/my-learning" element={<MyLearningPage />} />
-                  <Route path="/assignments" element={<AssignmentsPage />} />
-                  <Route path="/quizzes" element={<QuizzesPage />} />
-                  <Route path="/notes" element={<NotesPage />} />
-                  <Route path="/announcements" element={<AnnouncementsPage />} />
-                  <Route path="/progress" element={<ProgressPage />} />
-                  <Route path="/smart-learning" element={<SmartLearningPage />} />
-                  <Route path="/focus-room" element={<FocusRoomPage />} />
-                  <Route path="/planner" element={<PlannerPage />} />
-                  <Route path="/achievements" element={<AchievementsPage />} />
-                  <Route path="/saved" element={<SavedLessonsPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/my-courses" element={<MyCoursesPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </NotificationProvider>
-        </CourseProvider>
-      </AuthProvider>
+                      {/* Main App Layout */}
+                      <Route element={<MainLayout onReplayIntro={handleReplayIntro} />}>
+                        <Route path="/" element={<LandingPage onReplayIntro={handleReplayIntro} />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/courses" element={<CoursesPage />} />
+                        <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/checkout/:courseId" element={<CheckoutPage />} />
+                        <Route path="/learn/:courseId" element={<ClassroomPage />} />
+                        <Route path="/learn/:courseId/lesson/:lessonId" element={<ClassroomPage />} />
+                        <Route path="/my-learning" element={<MyLearningPage />} />
+                        <Route path="/assignments" element={<AssignmentsPage />} />
+                        <Route path="/quizzes" element={<QuizzesPage />} />
+                        <Route path="/notes" element={<NotesPage />} />
+                        <Route path="/announcements" element={<AnnouncementsPage />} />
+                        <Route path="/progress" element={<ProgressPage />} />
+                        <Route path="/smart-learning" element={<SmartLearningPage />} />
+                        <Route path="/focus-room" element={<FocusRoomPage />} />
+                        <Route path="/planner" element={<PlannerPage />} />
+                        <Route path="/achievements" element={<AchievementsPage />} />
+                        <Route path="/saved" element={<SavedLessonsPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/my-courses" element={<MyCoursesPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                      </Route>
+                    </Routes>
+                  </BrowserRouter>
+                </FocusProvider>
+              </NotificationProvider>
+            </PaymentProvider>
+          </CartProvider>
+          </CourseProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

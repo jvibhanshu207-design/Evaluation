@@ -11,7 +11,7 @@ import {
   TrendingUp,
   ShieldCheck,
   Star,
-  Bot,
+  CalendarCheck,
   Timer,
   Brain
 } from 'lucide-react';
@@ -280,13 +280,13 @@ export default function LandingPage() {
                 color: 'var(--cyan-accent)'
               }}
             >
-              <Bot size={24} />
+              <CalendarCheck size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px' }}>
-              Cognitive AI Tutor
+              Study Planner & Notes
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
-              Floating LearnSphere AI capable of deep topic explanations, executive lesson summaries, instant quizzes, and structured note formulation.
+              Schedule exam milestones, maintain rich digital study notes with tags, and track your daily academic targets with ease.
             </p>
           </div>
 

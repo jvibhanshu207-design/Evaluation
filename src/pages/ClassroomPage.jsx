@@ -451,25 +451,6 @@ export default function ClassroomPage() {
                 <Clock size={15} />
                 <span>{isWatchLater(activeLesson.id) ? 'In Watch Later' : 'Watch Later'}</span>
               </button>
-
-              <button
-                onClick={() => {
-                  sound.playClick();
-                  const btn = document.getElementById('floating-ai-button');
-                  if (btn) btn.click();
-                }}
-                className="glass-btn"
-                style={{
-                  padding: '7px 14px',
-                  fontSize: '0.82rem',
-                  borderColor: 'rgba(167, 139, 250, 0.4)',
-                  color: 'var(--cyan-accent)'
-                }}
-                title="Ask LearnSphere AI about this lesson"
-              >
-                <Sparkles size={15} />
-                <span>Ask AI</span>
-              </button>
             </div>
 
             {/* Navigation & Completion Buttons */}

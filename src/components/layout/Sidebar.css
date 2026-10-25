@@ -30,8 +30,10 @@
 }
 
 .sidebar-header.collapsed {
-  padding: 20px 0;
+  padding: 16px 0;
   justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .sidebar-header.expanded {

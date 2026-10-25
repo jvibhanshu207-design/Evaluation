@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CommandPalette from './CommandPalette';
-import AIAssistant from '../ai/AIAssistant';
+import CartDrawer from '../cart/CartDrawer';
 import './MainLayout.css';
 
 export default function MainLayout({ onReplayIntro }) {
@@ -44,6 +44,7 @@ export default function MainLayout({ onReplayIntro }) {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           onToggleMobileSidebar={() => setIsMobileOpen(!isMobileOpen)}
           onReplayIntro={onReplayIntro}
+          isMobileSidebarOpen={isMobileOpen}
         />
 
         <main className="main-container">
@@ -57,8 +58,8 @@ export default function MainLayout({ onReplayIntro }) {
         onClose={() => setIsCommandPaletteOpen(false)}
       />
 
-      {/* Floating LearnSphere AI Assistant */}
-      <AIAssistant />
+      {/* Slide-out Shopping Cart Drawer */}
+      <CartDrawer />
     </div>
   );
 }

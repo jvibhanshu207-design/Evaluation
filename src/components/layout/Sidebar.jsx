@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useCourses } from '../../context/CourseContext';
+import { useFocus } from '../../context/FocusContext';
+import { useLanguage } from '../../context/LanguageContext';
+import Logo from '../common/Logo';
+import LanguageSelector from '../common/LanguageSelector';
 import {
   LayoutDashboard,
   Compass,
@@ -19,11 +22,11 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   RotateCcw,
   Brain,
   Timer,
   BookOpen,
+  Globe,
   X
 } from 'lucide-react';
 import { resetDemoData } from '../../utils/storage';
@@ -31,31 +34,43 @@ import './Sidebar.css';
 
 export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onCloseMobile }) {
   const { logout } = useAuth();
-  const { enrolledCourseIds } = useCourses();
+  const { isRunning, formattedTime } = useFocus();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
+  // Close mobile sidebar on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isMobileOpen) {
+        if (onCloseMobile) onCloseMobile();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileOpen, onCloseMobile]);
+
   const navLinks = [
-    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/courses', label: 'Courses', icon: Compass },
-    { to: '/my-courses', label: 'My Courses', icon: BookOpen, badge: 'Enrolled' },
+    { to: '/dashboard', label: t('dashboard', 'Dashboard'), icon: LayoutDashboard },
+    { to: '/courses', label: t('courses', 'Courses'), icon: Compass },
+    { to: '/my-courses', label: t('myCourses', 'My Courses'), icon: BookOpen, badge: t('alreadyEnrolled', 'Enrolled') },
+    { to: '/my-learning', label: t('myLearning', 'My Learning'), icon: GraduationCap },
+    { to: '/assignments', label: t('assignments', 'Assignments'), icon: FileCheck2 },
+    { to: '/quizzes', label: t('quizzes', 'Quizzes'), icon: HelpCircle },
+    { to: '/notes', label: t('notes', 'Notes'), icon: FileText },
+    { to: '/announcements', label: t('announcements', 'Announcements'), icon: Bell, badge: 'New' },
+    { to: '/progress', label: t('progress', 'Progress'), icon: LineChart },
+    { to: '/smart-learning', label: t('smartLearning', 'Smart Learning'), icon: Brain },
     {
-      to: '/my-learning',
-      label: 'My Learning',
-      icon: GraduationCap,
-      badge: enrolledCourseIds?.length ? String(enrolledCourseIds.length) : undefined
+      to: '/focus-room',
+      label: t('focusRoom', 'Focus Room'),
+      icon: Timer,
+      badge: isRunning ? formattedTime : '⚡'
     },
-    { to: '/assignments', label: 'Assignments', icon: FileCheck2, badge: '4' },
-    { to: '/quizzes', label: 'Quizzes', icon: HelpCircle, badge: '2' },
-    { to: '/notes', label: 'Notes', icon: FileText },
-    { to: '/announcements', label: 'Announcements', icon: Bell, badge: 'New' },
-    { to: '/progress', label: 'Progress', icon: LineChart },
-    { to: '/smart-learning', label: 'Smart Learning', icon: Brain, badge: 'AI' },
-    { to: '/focus-room', label: 'Focus Room', icon: Timer, badge: '⚡' },
-    { to: '/planner', label: 'Study Planner', icon: CalendarCheck },
-    { to: '/achievements', label: 'Achievements', icon: Award },
-    { to: '/saved', label: 'Saved Lessons', icon: Bookmark },
-    { to: '/profile', label: 'Profile', icon: User }
+    { to: '/planner', label: t('studyPlanner', 'Study Planner'), icon: CalendarCheck },
+    { to: '/achievements', label: t('achievements', 'Achievements'), icon: Award },
+    { to: '/saved', label: t('savedLessons', 'Saved Lessons'), icon: Bookmark },
+    { to: '/profile', label: t('profile', 'Profile'), icon: User }
   ];
 
   const handleResetData = () => {
@@ -77,6 +92,10 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
 
       {/* Sidebar Container */}
       <aside
+        id="mobile-navigation-drawer"
+        role={isMobileOpen ? 'dialog' : 'complementary'}
+        aria-modal={isMobileOpen ? 'true' : undefined}
+        aria-label={isMobileOpen ? 'Navigation Menu' : 'Application Sidebar'}
         className={`glass-panel sidebar-container ${isMobileOpen ? 'mobile-open' : ''}`}
         style={{
           width: isCollapsed ? '78px' : '260px'
@@ -85,16 +104,7 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
         {/* Top: Logo & Collapse Button */}
         <div>
           <div className={`sidebar-header ${isCollapsed ? 'collapsed' : 'expanded'}`}>
-            {!isCollapsed && (
-              <div className="sidebar-brand-box">
-                <div className="sidebar-brand-icon">
-                  <Sparkles size={18} color="white" />
-                </div>
-                <span className="sidebar-brand-text">
-                  LearnSphere
-                </span>
-              </div>
-            )}
+            <Logo size="sm" to="/dashboard" showText={!isCollapsed} />
 
             <button
               onClick={onToggleCollapse}
@@ -149,11 +159,11 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
         <div className={`sidebar-footer ${isCollapsed ? 'collapsed' : 'expanded'}`}>
           <button
             onClick={() => setShowSettingsModal(true)}
-            title={isCollapsed ? 'Settings' : undefined}
+            title={isCollapsed ? t('settings', 'Settings') : undefined}
             className={`sidebar-footer-btn ${isCollapsed ? 'collapsed' : 'expanded'}`}
           >
             <Settings size={18} />
-            {!isCollapsed && <span>Settings</span>}
+            {!isCollapsed && <span>{t('settings', 'Settings')}</span>}
           </button>
 
           <button
@@ -161,11 +171,11 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
               logout();
               navigate('/login');
             }}
-            title={isCollapsed ? 'Logout' : undefined}
+            title={isCollapsed ? t('logout', 'Logout') : undefined}
             className={`sidebar-footer-btn danger ${isCollapsed ? 'collapsed' : 'expanded'}`}
           >
             <LogOut size={18} />
-            {!isCollapsed && <span>Logout</span>}
+            {!isCollapsed && <span>{t('logout', 'Logout')}</span>}
           </button>
         </div>
       </aside>
@@ -182,7 +192,7 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
           >
             <div className="sidebar-settings-header">
               <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 700 }}>
-                System Settings
+                {t('systemSettings', 'System Settings')}
               </h3>
               <button
                 onClick={() => setShowSettingsModal(false)}
@@ -192,10 +202,25 @@ export default function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, o
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Language Selector Row */}
+              <div className="sidebar-settings-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                    <Globe size={16} color="var(--cyan-accent)" />
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{t('language', 'Language')}</h4>
+                  </div>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    Choose your preferred display language for UI & curriculum.
+                  </p>
+                </div>
+                <LanguageSelector />
+              </div>
+
+              {/* Reset Data Row */}
               <div className="sidebar-settings-item">
                 <div>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>Reset Demo Data</h4>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{t('resetDemoData', 'Reset Demo Data')}</h4>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                     Restore original courses, lessons, notes, and progress.
                   </p>

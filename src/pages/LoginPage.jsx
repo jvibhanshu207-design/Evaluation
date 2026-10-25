@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { sound } from '../utils/sound';
+import Logo from '../components/common/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('vibhanshu@learnsphere.edu');
@@ -80,21 +81,9 @@ export default function LoginPage() {
         }}
       >
         {/* Brand Logo & Header */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div
-            style={{
-              width: '54px',
-              height: '54px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #8B5CF6, #22D3EE)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px auto',
-              boxShadow: '0 0 25px rgba(139, 92, 246, 0.6)'
-            }}
-          >
-            <Sparkles size={28} color="white" />
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+            <Logo size="lg" to="/" />
           </div>
 
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>

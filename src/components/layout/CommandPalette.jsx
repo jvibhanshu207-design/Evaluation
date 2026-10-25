@@ -37,7 +37,7 @@ export default function CommandPalette({ isOpen, onClose }) {
     { id: 'p-plan', type: 'page', title: 'Study Planner', subtitle: 'Schedule & calendar deadlines', icon: Calendar, link: '/planner' },
     { id: 'p-achieve', type: 'page', title: 'Achievements & Leaderboard', subtitle: 'Gamification badges, XP & ranking', icon: Award, link: '/achievements' },
     { id: 'p-ann', type: 'page', title: 'Announcements', subtitle: 'Academic notifications & notices', icon: Bell, link: '/announcements' },
-    { id: 'p-faq', type: 'page', title: 'Frequently Asked Questions (FAQs)', subtitle: 'Knowledge base, courses, AI tutor, certs & support', icon: HelpCircle, link: '/#faqs' },
+    { id: 'p-faq', type: 'page', title: 'Frequently Asked Questions (FAQs)', subtitle: 'Knowledge base, courses, study tools, certs & support', icon: HelpCircle, link: '/#faqs' },
 
     // Courses
     ...courses.map(c => ({
